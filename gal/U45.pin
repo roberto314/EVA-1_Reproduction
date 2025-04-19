@@ -1,0 +1,25 @@
+
+
+ Pin # | Name     | Pin Type
+-----------------------------
+   1   | HIRES    | Input
+   2   | CLK4M6   | Input
+   3   | CLKE     | Input
+   4   | CLKE2    | Input
+   5   | CLK9M    | Input
+   6   | nc2      | Input
+   7   | nc3      | Input
+   8   | nc4      | Input
+   9   | nTRAM    | Input
+  10   | GND      | GND
+  11   | R3       | Input
+  12   | TDOTCLK  | Output
+  13   | nR3      | Output
+  14   | TRAM     | Output
+  15   | nc5      | NC
+  16   | nc6      | NC
+  17   | nc7      | NC
+  18   | nLTDAT   | NC
+  19   | LTDAT    | Output
+  20   | VCC      | VCC
+

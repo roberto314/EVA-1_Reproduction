@@ -1,0 +1,21 @@
+GAL16V8   ; first line : used GAL
+EVA1 U45;
+
+; 1     2     3      4     5   6   7    8     9      10
+HIRES CLK4M6 CLKE  CLKE2 CLK9M nc2 nc3  nc4  nTRAM   GND
+ R3  TDOTCLK  nR3  TRAM   nc5 nc6 nc7  nLTDAT  LTDAT   VCC
+; 11    12    13    14    15   16  17  18   19      20
+
+;EQUATIONS
+
+/TDOTCLK = HIRES  & CLK9M
+        # /HIRES & CLK4M6
+
+LTDAT  = HIRES  & CLKE
+       # /HIRES & CLKE2 
+
+nR3 = /R3
+TRAM = /nTRAM
+
+DESCRIPTION
+EVA1 Decoder U45
