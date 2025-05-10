@@ -201,7 +201,7 @@ PROMPT	LDX	#PROMPTX
 	JMP	GO	GOTO USER PROGRAM
 	CMPA	#'J
 	BNE	*+5
-	JMP	JUMP	JUMP TO USER PROGRAM
+	JMP	MENU_J	Jump Commands
 	CMPA	#'R
 	BNE	*+5
 	JMP	MENU_R	REG/STACK CMDS
@@ -232,6 +232,21 @@ PROMPT	LDX	#PROMPTX
 	LDAA	#'?
 	JSR	OUTCHAR
 	BRA	PROMPT
+
+MENU_J	JSR	INCHAR
+	CMPA	#$0D
+	BNE	*+5
+	JMP	PROMPT
+	ANDA	#$DF	CONVERT TO UPPER CASE
+	CMPA	#'M     
+	BNE	*+5
+	JMP	JUMP	JUMP TO USER PROGRAM
+	CMPA	#'S     
+	BNE	*+5
+	JMP	JSUB	JSR TO USER PROGRAM
+	LDAA	#'?
+	JSR	OUTCHAR
+	JMP	PROMPT
 
 MENU_M	JSR	INCHAR
 	CMPA	#$0D
@@ -392,8 +407,19 @@ JUMP	JSR     OUTS
 	JSR	PCRLF
 	LDS     SP
 	JMP	0,X	JUMP TO ADDRESS IN X
+	BRA 	RETURN
 JUMPE	LDAA	#'?
 	JSR	OUTCHAR
+	JMP	PROMPT
+
+***************
+* JSR TO ADDRESS
+JSUB	JSR     OUTS
+	JSR     BADDR
+        BCC	JUMPE	ADDRESS INPUT OK?
+	JSR	PCRLF
+	LDS     SP
+	JSR	0,X	JUMP TO ADDRESS IN X
 	JMP	PROMPT
 
 ***************
@@ -581,7 +607,7 @@ MC6845_40Z FCB     $30
         FCB     $0C   
         FCB     $19   
         FCB     $1B   
-        FCB     $A0   
+        FCB     $50   
         FCB     $09   
         FCB     $00   
         FCB     $10   
@@ -597,7 +623,7 @@ MC6845_72Z FCB     $62
         FCB     $00   
         FCB     $19   
         FCB     $1F   
-        FCB     $A0   
+        FCB     $50   
         FCB     $07   
         FCB     $00   
         FCB     $07   
@@ -613,7 +639,7 @@ MC6845_80Z FCB     $62
         FCB     $00   
         FCB     $19   
         FCB     $1B   
-        FCB     $A2   
+        FCB     $52   
         FCB     $09   
         FCB     $00   
         FCB     $10   
