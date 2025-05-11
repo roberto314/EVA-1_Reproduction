@@ -25,9 +25,11 @@ M6845_0 EQU	$4000
 M6845_1 EQU	$4001
 
 ***************
-* DEFINITION OF VARIABELS
-	ORG     $00D5
-*	ORG     $17D5
+* DEFINITION OF VARIABELS (16 Bytes)
+*	ORG     $00D5
+	ORG     $00DC
+*	ORG     $1FD5
+*	ORG     $BFD5
 STACK   RMB     1       STACK POINTER
         RMB     1       CONDITIONS CODES
         RMB     1       B-ACC
@@ -44,10 +46,11 @@ XLOW	RMB	1	X-TEMP LOW
 XTEMP	RMB	2	X-TEMP
 
 ***************
-* DEFINITION OF VECTORS
+* DEFINITION OF VECTORS (27 Bytes)
 * 3 BYTES JMP+ADDR
-*	ORG     $00E5
-	ORG     $1FE5
+*	ORG     $00E5 ; does not work, needs to be above $100
+*	ORG     $1FE5
+	ORG     $BFE5
 CONSVEC	RMB	3	CONSOLE STATUS VECTOR
 CONOVEC	RMB	3	CONSOLE OUTPUT VECTOR
 CONIVEC	RMB	3	CONSOLE INPUT VECTOR
@@ -90,7 +93,9 @@ HELPTX	FCB	$0D,$0A,$0A
 	FCB	$0D,$0A,$0D,$0A
 	FCC	" G  Go (RTI)"
 	FCB	$0D,$0A
-	FCC	" J  Jump to address"
+	FCC	" JM  Jump to address"
+	FCB	$0D,$0A
+	FCC	" JS  Jump to subroutine"
 	FCB	$0D,$0A
 	FCC	" L  Load S19 from console"
 	FCB	$0D,$0A
@@ -1172,4 +1177,4 @@ IOWR	PSHA			SAVE DATA
 
 ***************
 * EXTENDED ROM
-EXROM	EQU	$D000
+EXROM	EQU	$f000

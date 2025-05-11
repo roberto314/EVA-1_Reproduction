@@ -238,7 +238,7 @@ ResetTextScreen LDX     #$0000                   ;C12E: CE 00 00
         CLRA                             ;C140: 4F 
 ClearTRAM STAA    ,X                       ;C141: A7 00 
         INX                              ;C143: 08 
-        CPX     #M1800                   ;C144: 8C 18 00 
+        CPX     #M1800                   ;C144: 8C 18 00 Changed to 2000
         BNE     ClearTRAM                ;C147: 26 F8 
         RTS                              ;C149: 39 
 GRPH_Comma LDAA    M00A2                    ;C14A: 96 A2 
@@ -793,7 +793,7 @@ ZC570   LDX     StartAddressH            ;C570: DE 98
         ANDA    #$BF                     ;C58C: 84 BF          Clear T/G (P1.6)
         STAA    P1DR                     ;C58E: 97 02 
         LDAA    StartAddressH            ;C590: 96 98 
-        ANDA    #$07                     ;C592: 84 07 
+        ANDA    #$07                     ;C592: 84 07  Changed to 0F
         STAA    StartAddressH            ;C594: 97 98 
         LDAA    TextPosition             ;C596: 96 CC 
         ANDA    #$17                     ;C598: 84 17 
@@ -839,7 +839,7 @@ ZC5E1   LDAA    TextPosition             ;C5E1: 96 CC
         CLRA                             ;C5E9: 4F 
 ZC5EA   STAA    ,X                       ;C5EA: A7 00 
         INX                              ;C5EC: 08 
-        CPX     #M1800                   ;C5ED: 8C 18 00 
+        CPX     #M1800                   ;C5ED: 8C 18 00  Changed to 2000
         BNE     ZC5EA                    ;C5F0: 26 F8 
         RTS                              ;C5F2: 39 
 MovCRSR_Rgt INC     >CursorColumn            ;C5F3: 7C 00 9A 
