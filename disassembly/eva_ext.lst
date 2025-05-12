@@ -1,8 +1,19 @@
                       ;****************************************************
                       ;* KK Systems EVA-1 Firmware                        *
                       ;* Disassembled and commented 2025 by R. Offner     *
-                      ;* v1.0                                             *
-                      ;*                                                  *
+                      ;* v1.1                                             *
+                      ;* This is the updated Version.                     *
+                      ;* This Version uses 32kBit of                      *
+                      ;* TextRAM (A12 must be tied low).                  *
+                      ;* Changes are:                                     *
+                      ;* .) Startup screen,                               *
+                      ;* .) extended Test Picture,                        *
+                      ;* .) ROM Start @ $F000,                            *
+                      ;* .) initialisation of the HD6845,                 *
+                      ;* .) Handling the Overflow of the TextRAM,         *
+                      ;* .) Functions to move the 6845 Window up and down *
+                      ;*    (MovWind_Up, MovWind_Dwn and PutWdwBack)      *
+                      ;* .) Possibility to Jump into Monitor              *
                       ;****************************************************
                       ;
                       ; Very quick remainder how the communication between a 
@@ -196,9 +207,9 @@ monitor
  4000                 M6845_0        EQU     $4000
  4001                 M6845_1        EQU     $4001
  8000                 GRAPHICRAM     EQU     $8000 ; Start of Graphic RAM
- BF00                 GRAMEND        EQU     $BF00 ; End of Graphic RAM+1 
+                      ;GRAMEND        EQU     $BF00 ; End of Graphic RAM+1 
 (used for Clear)
-                      ;GRAMEND        EQU     $C000 ; End of Graphic RAM+1 
+ C000                 GRAMEND        EQU     $C000 ; End of Graphic RAM+1 
 (used for Clear)
 
                       ;****************************************************
@@ -234,7 +245,7 @@ RAM
  F028 BDF4A6                         JSR     ClearGRAM       ;
  F02B 8EFCFF                         LDS     #GREETING-1     ; Write Text to 
 TextRAM
- F02E CE1000                         LDX     #$1000          ; Start Position 
+ F02E CE1000                         LDX     #TEXTRAM        ; Start Position 
 of Text
  F031 32              LOOP01         PULA                    ;
  F032 A700                           STAA    ,X              ;
@@ -686,6 +697,8 @@ Char_per_Line
  F289 39              ZC287          RTS                     ;
                       ;--------------------------------------;
  F28A 8D28            SET6845ADD     BSR     CALCRAMPOS      ;
+                      ;               ANDA    #$1F            ; limit to $FFF 
+new
  F28C DDCC                           STD     RAMTXTSTART     ;
  F28E C60C                           LDAB    #$0C            ; 
  F290 F74000                         STAB    M6845_0         ; Set Register c 
@@ -723,8 +736,7 @@ to $18 (=24)
  F2C1 DB9A                           ADDB    CursorColumn    ;
  F2C3 8900                           ADCA    #$00            ; must be < $7D0
  F2C5 D398                           ADDD    _6845STRTADRH   ;
- F2C7 840F                           ANDA    #$0F            ; limit to $FFF 
-new
+ F2C7 840F                           ANDA    #$0F            ; Limit to FFF
  F2C9 DD9C                           STD     _6845CRSRH      ;
  F2CB C31000                         ADDD    #TEXTRAM        ;
  F2CE 39                             RTS                     ;
@@ -1022,7 +1034,7 @@ Graphics Mode
  F4A9 4F                             CLRA                    ;
  F4AA A700            LOOP07         STAA    ,X              ;
  F4AC 08                             INX                     ;
- F4AD 8CBF00                         CPX     #GRAMEND        ;
+ F4AD 8CC000                         CPX     #GRAMEND        ;
  F4B0 26F8                           BNE     LOOP07          ;
  F4B2 39              LOCAL06        RTS                     ;
                       ;--------------------------------------;
@@ -1193,8 +1205,8 @@ Char_per_Line to RAMTXTSTART
                       ;--------------------------------------; belongs to 
 MovCRSR_Up
                       ; SCRLDWN:
-                      ; doesn't actually scrolls anywhere, it just moves the 
-up until first line
+                      ; doesn't actually scroll anywhere, it just moves the 
+cursor up until first line
                       ;
  F5AE DC98            SCRLDWN        LDD     _6845STRTADRH   ;
  F5B0 27C8                           BEQ     _SENDRESP6_     ;
@@ -1499,10 +1511,10 @@ Clear Screen
 Enter
  F70F F572                           FDB     Enter           ;
  F711 10                             FCB     $10             ; CTRL + P - Move 
-Window up
+Window up - new functions
  F712 F697                           FDB     MovWind_Up      ;
  F714 11                             FCB     $11             ; CTRL + Q - Move 
-Window down
+Window down - new functions
  F715 F6AB                           FDB     MovWind_Dwn     ;
  F717 12                             FCB     $12             ; CTRL + R - 
 Toggle Insert Mode
@@ -1717,11 +1729,11 @@ Line from X1Y1 to X2Y2
  FD3D 52203230323520
  FD44 20202020202020
  FD4B 2020202020
- FD50 20202020202020                 FCC     '                    v1.0         
+ FD50 20202020202020                 FCC     '                    v1.1         
        '
  FD57 20202020202020
  FD5E 20202020202076
- FD65 312E3020202020
+ FD65 312E3120202020
  FD6C 20202020202020
  FD73 2020202020
  FD78 20205665726269                 FCC     '  Verbinden mit HX-20 ueber 
@@ -1801,13 +1813,13 @@ eingeben.     '
  FF1D 68617261637465
  FF24 72736574202020
  FF2B 2020202020
- FF30 20204354524C2B                 FCC     '  CTRL+0: ?                      
-       '
- FF37 303A203F202020
- FF3E 20202020202020
- FF45 20202020202020
- FF4C 20202020202020
- FF53 2020202020
+ FF30 20204354524C2B                 FCC     '  CTRL+0: Testpic. (use w. 
+SCREEN 1,1)  '
+ FF37 303A2054657374
+ FF3E 7069632E202875
+ FF45 736520772E2053
+ FF4C 435245454E2031
+ FF53 2C31292020
  FF58 0000                           FCB      $00,$00
                       JUMP2MON
  FF5A CEE3B2                         LDX      #$E3B2
@@ -1847,7 +1859,7 @@ SYMBOL TABLE
    DELLINE 02 F501 DELSCREEN 02 F5E9  DISABLED 02 F12D  DRAWLINE 02 F38C
      DRWLN 02 F397     ENTER 02 F572    EPSEND 02 F7AD  EPSPFUNC 02 F774
   EXECFUNC 02 F24E  EXECSRCH 02 F242  GCRSRPOS 02 F198    GETHDR 02 F098
-  GETPOINT 02 F1BE   GETTEXT 02 F06E   GRAMEND 00 BF00 GRAMSETUP 02 F4A1
+  GETPOINT 02 F1BE   GETTEXT 02 F06E   GRAMEND 00 C000 GRAMSETUP 02 F4A1
  GRAPHICRAM 00 8000 GRAPHIC_CLR 02 F4B8  GRAPHMOD 00 00D3  GREETING 02 FD00
   HDLR_NMI 02 FF5F  HDLR_RST 02 F000 HDRBUFSTRT 00 0080   HDRCSSZ 00 0085
   HDRDAT01 02 F6E9  HDRDAT02 02 F6EB HDRFINISHED 02 F0BC   HDRFUNC 00 0083

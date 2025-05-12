@@ -1,0 +1,1747 @@
+                      ;****************************************************
+                      ;* KK Systems EVA-1 Firmware                        *
+                      ;* Disassembled and commented 2025 by R. Offner     *
+                      ;* v1.0                                             *
+                      ;* This is the original Version                     *
+                      ;* without any enhancements                         *
+                      ;****************************************************
+                      ;
+                      ; Very quick remainder how the communication between a 
+HX-20 and the EVA-1 works.
+                      ;
+                      ; 1. MASTER - SLAVE HANDSHAKE
+                      ;
+                      ; SOURCE         DESTINATION            COMMENT
+                      ;
+                      ;                                  ENQURE TO DESTINATION 
+DEVICE
+                      ;(EOT)    --->                     $04
+                      ; P1      --->                     is usually $31
+                      ; DID     --->                     can be $30 or $20
+                      ; SID     --->                     can be $20 or $30
+                      ; ENQ     --->                     $05
+                      ;        <---    ACK               $06
+                      ;
+                      ; 2. HEADER                                              
+                              Memory Location
+                      ;                                                        
+                                RX    TX
+                      ; SOH     --->                     $01 - SEND HEADER 
+(FUNCTION)                           -    $80
+                      ; FMT     --->                     usually $00 for HX-20 
+-> EVA-1 and $01 for other dir. $80   $81
+                      ; DID     --->                     can be $30 or $20     
+                                $81   $82
+                      ; SID     --->                     can be $20 or $30     
+                                $82   $83
+                      ; FNC     --->                     $xx                   
+                                $83   $84
+                      ; SIZ     --->                     $xx                   
+                                $84   $85
+                      ; HCS     --->                     Checksum              
+                                $85   
+                      ;        <---    ACK (NAK), (WAK)  $06
+                      ;
+                      ; 3. DATA
+                      ;
+                      ; STX     --->                     $02                   
+                               
+                      ; DB0     --->                     Data Bytes            
+                                $A0
+                      ; DB1     --->                     Data Bytes            
+                                $A1
+                      ;  .      --->                     Data Bytes            
+                                $A2
+                      ;  .      --->                     Data Bytes            
+                                $A3
+                      ; DBN     --->                     Data Bytes            
+                                $A4
+                      ; ETX     --->                     $03
+                      ; CKS     --->                     Checksum
+                      ;        <---    ACK, (NAK)        $06
+                      ;
+                      ; 4. END OF TRAMSMISSION
+                      ;
+                      ;(EOT)    --->                     $04
+                      ;
+                      ;---------------------------------------------------------
+----------
+                      ; CONTROL CODES
+                      ; SOH = 01
+                      ; STX = 02
+                      ; ETX = 03
+                      ; EOT = 04
+                      ; ENQ = 05
+                      ; ACK = 06
+                      ; DLE = 10
+                      ; NAK = 15
+                      ; WAK = DLE ;  (1F 3B)
+                      ;---------------------------------------------------------
+----------
+                      ; FMT CODE  FMT  DID  SID  FNC  SIZ  MSG       COMMENT
+                      ;   00       1    1    1    1    1   1-256   PREFERRED 
+FORMAT
+                      ;   01       1    1    1    1    1   1-256   RETURNED 
+RESULT
+                      ;   02       1    1    1    1    2   1-65536          
+(NOT SUPPORTED)
+                      ;   03       1    1    1    1    2   1-65536          
+(NOT SUPPORTED)
+                      ;   04       2    2    2    1    1   1-256            
+(NOT SUPPORTED)
+                      ;   05       2    2    2    1    1   1-256            
+(NOT SUPPORTED)
+                      ;   06       2    2    2    1    2   1-65536          
+(NOT SUPPORTED)
+                      ;   07       2    2    2    1    2   1-65536          
+(NOT SUPPORTED)
+                      ;---------------------------------------------------------
+----------
+                      ; Some useful IDs:
+                      ; HX-20: $20
+                      ; PX-8:  $22
+                      ; PX-4:  $23
+                      ; EVA-1 (and prob. other Screen Adpters) $30
+                      ; First TF-20 (first & second disk):  $31
+                      ; Second TF-20 (third & fourth disk): $32
+                      ;****************************************************
+                      ;* Used Labels                                      *
+                      ;****************************************************
+
+ 0000                 P1DDR          EQU     $0000
+ 0001                 P2DDR          EQU     $0001
+ 0002                 P1DR           EQU     $0002
+ 0003                 P2DR           EQU     $0003
+ 0009                 CNTH           EQU     $0009
+ 0010                 RMCR           EQU     $0010
+ 0011                 TRCSR          EQU     $0011
+ 0012                 RDR            EQU     $0012
+ 0013                 TDR            EQU     $0013
+ 0014                 RCR            EQU     $0014
+ 0080                 HDRBUFSTRT     EQU     $0080 ; -|- Header Buffer
+ 0082                 HDRSRC         EQU     $0082 ;  |
+ 0083                 HDRFUNC        EQU     $0083 ;  |
+ 0084                 HDRSZFN        EQU     $0084 ;  | - SIZ for RX and FNC 
+for TX
+ 0085                 HDRCSSZ        EQU     $0085 ; -| - HCS for RX and SIZ 
+for TX
+ 0098                 _6845STRTADRH  EQU     $0098 ; 
+ 0099                 _6845STRTADRL  EQU     $0099 ; 6845 Start Address
+ 009A                 CursorColumn   EQU     $009A ; Colunm of cursor 
+(0..Char_per_Line-1)
+ 009B                 CursorRow      EQU     $009B ; Row of Cursor (0..24)
+ 009C                 _6845CRSRH     EQU     $009C ; 
+ 009D                 _6845CRSRL     EQU     $009D ; _6845CRSR always 0x1000 
+less than RAMTXTSTART
+ 00A0                 TXTBUFA0A1     EQU     $00A0 ; -|- Text Buffer
+ 00A1                 TXTBUFA1       EQU     $00A1 ;  |
+ 00A2                 TXTBUFA2A3     EQU     $00A2 ;  |
+ 00A3                 TXTBUFA3       EQU     $00A3 ;  |
+ 00A4                 TXTBUFA4A5     EQU     $00A4 ;  |
+ 00A6                 TXTBUFA6A7     EQU     $00A6 ;  |
+ 00A8                 TXTBUFA8A9     EQU     $00A8 ; -|
+ 00AC                 TEMPACAD       EQU     $00AC ; Temp Var. only used in 
+CONVXPXLCHAR
+ 00AE                 TEMPAEAF       EQU     $00AE ; Temp Var. only used in 
+CONVXPXLCHAR
+ 00AF                 TEMPAF         EQU     $00AF ; Temp Var. only used in 
+CONVXPXLCHAR
+ 00B0                 TEMPB0B1       EQU     $00B0 ; Temp Var. used in DRWLN 
+and READCHAR
+ 00B2                 TEMPB2B3       EQU     $00B2 ; Temp Var. used in DRWLN
+ 00B4                 TEMPB4B5       EQU     $00B4 ; Temp Var. used in DRWLN
+ 00B6                 TEMPB6B7       EQU     $00B6 ; Temp Var. used in DRWLN
+ 00B8                 TEMPB8B9       EQU     $00B8 ; Temp Var. used in DRWLN 
+(only stored, never read)
+ 00BA                 TEMPBABB       EQU     $00BA ; Temp Var. used in DRWLN 
+(only stored, never read)
+ 00BC                 TEMPBCBD       EQU     $00BC ; Temp Var. used in DRWLN
+ 00BE                 TEMPBEBF       EQU     $00BE ; Temp Var. used in DRWLN
+ 00BF                 TEMPBF         EQU     $00BF ; Temp Var. used in DRWLN
+ 00C1                 RXTXCNT        EQU     $00C1 ; How many Char. to send
+ 00C2                 TEMPC2C3       EQU     $00C2 ; Temp Var. used in DRWLN
+ 00C4                 SETB7          EQU     $00C4 ; If $FF Bit7 of Next 
+character is set
+ 00C5                 CHRTMP         EQU     $00C5 ; Temp Character Storage 
+for Intensity and Inverse Bit
+ 00C6                 _6845CRSRREG   EQU     $00C6 ; Temp Var. for 6845 Cursor 
+Register
+ 00C7                 CHKSUM         EQU     $00C7 ; Temp Var. for Checksum 
+Calculation
+ 00C8                 TMPCRSRRW      EQU     $00C8 ; Temp Var. for Cursor Row 
+used in READLINE
+ 00CA                 TEMP16_01      EQU     $00CA ; Temp Var. for 'X' 
+Register
+ 00CC                 RAMTXTSTART    EQU     $00CC ; RAM Address where the 
+Text starts (starts @ $1000)
+ 00CE                 M00CE          EQU     $00CE
+ 00D0                 M00D0          EQU     $00D0
+ 00D1                 M00D1          EQU     $00D1
+ 00D2                 Char_per_Line  EQU     $00D2 ; can be 32, 40, 72 or 80
+ 00D3                 GRAPHMOD       EQU     $00D3 ; if 0 only Textmode, else 
+Graphic also
+ 00D4                 TMPRDCH        EQU     $00D4 ; Temp Var. for READCHAR
+ 00D8                 TEMPD8D9       EQU     $00D8
+ 00D9                 M00D9          EQU     $00D9
+ 00DA                 M00DA          EQU     $00DA
+ 00FF                 RAMEND         EQU     $00FF
+ 1000                 TEXTRAM        EQU     $1000 ;
+ 1800                 TRAMEND        EQU     $1800 ; End of Text Ram +1
+ 4000                 M6845_0        EQU     $4000
+ 4001                 M6845_1        EQU     $4001
+ 8000                 GRAPHICRAM     EQU     $8000 ; Start of Graphic RAM
+ C000                 GRAMEND        EQU     $C000 ; End of Graphic RAM+1 
+(used for Clear)
+
+                      ;****************************************************
+                      ;* Program Code / Data Areas                        *
+                      ;****************************************************
+
+                              ORG     $c000
+
+ C000 0F              hdlr_RST       SEI                     ;
+ C001 8E00FF                         LDS     #RAMEND         ;
+ C004 5F                             CLRB                    ;
+ C005 86FF                           LDAA    #$FF            ;
+ C007 97C7                           STAA    CHKSUM          ;
+ C009 9700                           STAA    P1DDR           ;
+ C00B D701                           STAB    P2DDR           ;
+ C00D 860F                           LDAA    #$0F            ;
+ C00F 9702                           STAA    P1DR            ; Clear INVERT, 
+TXTON_OFF, GTEXT, TEXT (P1.0-P1.3), Set CHARSET, T/G, HIGHRES (P1.4-P1.7)
+ C011 D7D3                           STAB    GRAPHMOD        ;
+ C013 D703                           STAB    P2DR            ;
+ C015 D7C6                           STAB    _6845CRSRREG    ;
+ C017 860C                           LDAA    #$0C            ;
+ C019 9710                           STAA    RMCR            ; CC0 and CC1 set 
+- external Serial clock (8xBaudrate)
+ C01B C60A                           LDAB    #$0A            ;
+ C01D D711                           STAB    TRCSR           ; Receiver and 
+Transmitter Enable
+ C01F 86C0                           LDAA    #$C0            ;
+ C021 9714                           STAA    RCR             ; enable internal 
+RAM
+ C023 BDC66E                         JSR     CONF40          ;
+ C026 BDC4A2                         JSR     ClearGRAM       ;
+ C029 8EC723                         LDS     #GREETING-1     ; Write Text to 
+TextRAM
+ C02C CE139C                         LDX     #$139C          ; Start Position 
+of Text
+ C02F 32              LOOP01         PULA                    ;
+ C030 A700                           STAA    ,X              ;
+ C032 08                             INX                     ;
+ C033 8121                           CMPA    #$21            ;
+ C035 26F8                           BNE     LOOP01          ;
+ C037 8E00FF                         LDS     #RAMEND         ;
+                      ;*********************************************************
+**********************
+                      ;*********************************************************
+**********************
+                      ;**                      RX State Machine                
+                     **
+                      ;*********************************************************
+**********************
+                      ;*********************************************************
+**********************
+ C03A DE11            LOOP02         LDX     TRCSR           ;
+ C03C 9611            WAITHNDSHK     LDAA    TRCSR           ; State Machine 
+for Handshake (1)
+ C03E 8540                           BITA    #$40            ; check for 
+Overrun Framing Error
+ C040 26F8                           BNE     LOOP02          ;
+ C042 D612                           LDAB    RDR             ; Received Char 
+is in 'B'
+ C044 C131                           CMPB    #$31            ;
+ C046 26F4                           BNE     WAITHNDSHK      ; Check 'START? 
+(31)' - everything before gets thrown away, START of STATE MACHINE!
+ C048 8D1A                           BSR     WAITRXC         ;
+ C04A C130                           CMPB    #$30            ;
+ C04C 26EE                           BNE     WAITHNDSHK      ; Check 'DID 
+(30)'
+ C04E 8D14                           BSR     WAITRXC         ;
+ C050 C120                           CMPB    #$20            ;
+ C052 26E8                           BNE     WAITHNDSHK      ; Check 'SID 
+(20)'
+ C054 8D0E                           BSR     WAITRXC         ;
+ C056 C105                           CMPB    #$05            ;
+ C058 26E2                           BNE     WAITHNDSHK      ; Check for 'ENQ 
+(05)'
+ C05A 8D53                           BSR     Send_ACK        ;
+ C05C 8D06                           BSR     WAITRXC         ;
+ C05E C101                           CMPB    #$01            ;
+ C060 2734                           BEQ     GETHDR          ; Check 'SOH 
+(01)'
+ C062 2046                           BRA     SNDNONACK       ;
+                      ;------------------------------------  ;
+ C064 7D0011          WAITRXC        TST     >TRCSR          ; Blocking Wait 
+for RX Character
+ C067 2AFB                           BPL     WAITRXC         ;
+ C069 D612                           LDAB    RDR             ;
+ C06B 39                             RTS                     ;
+                      ;--------------------------------------;
+ C06C 8DF6            GETTEXT        BSR     WAITRXC         ; State Machine 
+for Text (4)
+ C06E C102                           CMPB    #$02            ; Check 'STX 
+(02)'
+ C070 2638                           BNE     SNDNONACK       ;
+ C072 CE00A0                         LDX     #TXTBUFA0A1     ; Buffer starts @ 
+$A0
+ C075 17                             TBA                     ; RXChar is now 
+also in 'A' for Checksum
+ C076 D684                           LDAB    HDRSZFN         ;
+ C078 5C                             INCB                    ;
+ C079 D7C1                           STAB    RXTXCNT         ;
+ C07B 8DE7            LOOP03         BSR     WAITRXC         ;
+ C07D E700                           STAB    ,X              ;
+ C07F 1B                             ABA                     ;
+ C080 08                             INX                     ;
+ C081 7A00C1                         DEC     >RXTXCNT        ;
+ C084 26F5                           BNE     LOOP03          ;
+ C086 8DDC                           BSR     WAITRXC         ;
+ C088 C103                           CMPB    #$03            ;  Check 'ETX 
+(03)'
+ C08A 2606                           BNE     Send_NACK       ;
+ C08C 1B                             ABA                     ;
+ C08D 8DD5                           BSR     WAITRXC         ;
+ C08F 1B                             ABA                     ;
+ C090 271D                           BEQ     Send_ACK        ; Check for 
+Checksum = zero
+ C092 C615            Send_NACK      LDAB    #$15            ;
+ C094 201B                           BRA     SendB           ; Send NACK
+                      ;--------------------------------------;
+ C096 17              GETHDR         TBA                     ; State Machine 
+for Header (2), RXChar is now also in 'A' for Checksum (01)
+ C097 CE0080                         LDX     #HDRBUFSTRT     ; Buffer starts 
+at $80
+ C09A 8DC8            LOOP04         BSR     WAITRXC         ;
+ C09C E700                           STAB    ,X              ; Store in 
+Buffer: 01,00,30
+ C09E 1B                             ABA                     ; add to Checksum 
+(01+00+30)
+ C09F 08                             INX                     ;
+ C0A0 8C0085                         CPX     #HDRCSSZ        ; Check max 
+Length of 6 Characters (HDRCSSZ is @ $85)
+ C0A3 26F5                           BNE     LOOP04          ;
+ C0A5 8DBD                           BSR     WAITRXC         ; Get Checksum 
+from HX-20
+ C0A7 1B                             ABA                     ;
+ C0A8 2710                           BEQ     HDRFINISHED     ; Check for 
+Checksum = zero.
+ C0AA 8DE6            SNDNONACK      BSR     Send_NACK       ; There may be a 
+small Bug! EVA-1 sends a NACK every Time after Header 01,00,30!
+ C0AC 7EC03C                         JMP     WAITHNDSHK      ;
+*** warning 1: Long branch within short branch range could be optimized
+                      ;--------------------------------------;
+ C0AF C606            Send_ACK       LDAB    #$06            ;
+ C0B1 9611            SendB          LDAA    TRCSR           ;
+ C0B3 8420                           ANDA    #$20            ;  Check TX Reg. 
+Empty
+ C0B5 27FA                           BEQ     SendB           ;
+ C0B7 D713                           STAB    TDR             ;
+ C0B9 39                             RTS                     ;
+                      ;--------------------------------------;
+ C0BA 8DF3            HDRFINISHED    BSR     Send_ACK        ; Header is done 
+(3), Send ACK
+ C0BC 8DAE                           BSR     GETTEXT         ; Receive TEXT 
+Packet
+ C0BE 7F0085                         CLR     >HDRCSSZ        ;
+ C0C1 8DA1                           BSR     WAITRXC         ;
+ C0C3 C104                           CMPB    #$04            ; Check 'EOT 
+(04)'
+ C0C5 26E3                           BNE     SNDNONACK       ;
+ C0C7 9683                           LDAA    HDRFUNC         ;
+ C0C9 CEC77B                         LDX     #EPSEND         ; Load End of 
+EPSFUNC Jumptable
+ C0CC DFCA                           STX     TEMP16_01       ;
+ C0CE CEC742                         LDX     #EPSPFUNC       ; Load Beginning 
+of EPSFUNC Jumptable
+ C0D1 BDC240                         JSR     EXECSRCH        ; Search for 
+correct Function, if found Jump to it
+ C0D4 20D4                           BRA     SNDNONACK       ;
+                      ;*********************************************************
+**********************
+                      ;*********************************************************
+**********************
+                      ;**                      TX Functions                    
+                     **
+                      ;*********************************************************
+**********************
+                      ;*********************************************************
+**********************
+                      ; SNDHDR:
+                      ; Builds 6 Byte Header and sends it [01 01 20 30 FUNC 
+SIZ]
+                      ; needs HDRCSSZ @ $85 which becomes SIZ and HDRFUNC
+                      ; Terminates with RTS
+                      ;
+ C0D6 8606            SNDHDR         LDAA    #$06            ; 6 Bytes long
+ C0D8 97C1                           STAA    RXTXCNT         ;
+ C0DA 9683                           LDAA    HDRFUNC         ; FUNC from $83
+ C0DC 9784                           STAA    HDRSZFN         ; to $84
+ C0DE FEC69F                         LDX     HDRDAT01        ; Reads $01,$01 
+from EPROM
+ C0E1 DF80                           STX     HDRBUFSTRT      ; Buffer starts @ 
+$80
+ C0E3 FEC6A1                         LDX     HDRDAT02        ; Reads $20,$30 
+from EPROM
+ C0E6 DF82                           STX     HDRSRC          ; @ $82
+ C0E8 CE0080                         LDX     #HDRBUFSTRT     ;
+                      ;--------------------------------------;
+                      ; SNDARR1:
+                      ; sends Values for RXTXCNT from 'X' Pointer and builds 
+Checksum
+                      ; blocking waits for one RX Character
+                      ;
+ C0EB 4F              SNDARR1        CLRA                    ;
+ C0EC E600            SNDARR2        LDAB    ,X              ;
+ C0EE D4C7                           ANDB    CHKSUM          ;
+ C0F0 1B                             ABA                     ; Add to Checksum
+ C0F1 36                             PSHA                    ;
+ C0F2 8DBD                           BSR     SendB           ;
+ C0F4 32                             PULA                    ;
+ C0F5 08                             INX                     ;
+ C0F6 7A00C1                         DEC     >RXTXCNT        ;
+ C0F9 26F1                           BNE     SNDARR2         ; Loop until all 
+char are sent
+ C0FB 40                             NEGA                    ;
+ C0FC 16                             TAB                     ;
+ C0FD 8DB2                           BSR     SendB           ; Send Checksum
+ C0FF BDC064                         JSR     WAITRXC         ;
+ C102 86FF                           LDAA    #$FF            ;
+ C104 97C7                           STAA    CHKSUM          ;
+ C106 39                             RTS                     ;
+                      ;--------------------------------------;
+ C107 CEC655                         LDX     #SendPKT_00     ; Never executed
+ C10A 8601                           LDAA    #$01            ; Never executed
+                      ;--------------------------------------;
+ C10C 8B03            SENDPAK        ADDA    #$03            ; 'A' is the 
+Charactercount without Checksum, Start and Stop, 'X' is the Pointer to Data
+ C10E 97C1                           STAA    RXTXCNT         ; (only used for 
+one Packet - Send Screensize)
+ C110 E600            LOOP06         LDAB    ,X              ;
+ C112 BDC0B1                         JSR     SendB           ;
+*** warning 1: Long branch within short branch range could be optimized
+ C115 08                             INX                     ;
+ C116 7A00C1                         DEC     >RXTXCNT        ;
+ C119 26F5                           BNE     LOOP06          ;
+ C11B BDC064                         JSR     WAITRXC         ;
+                      ;--------------------------------------;
+ C11E C604            Send_EOT       LDAB    #$04            ;
+ C120 BDC0B1                         JSR     SendB           ;
+*** warning 1: Long branch within short branch range could be optimized
+ C123 2006                           BRA     DISABLED        ; JMP to 
+WAITHNDSHK
+                      ;--------------------------------------;
+ C125 7F00D3                         CLR     >GRAPHMOD       ; Never executed
+ C128 BDC4D3                         JSR     CONF80          ; Never executed
+ C12B 7EC03C          DISABLED       JMP     WAITHNDSHK      ;
+                      ;*********************************************************
+**********************
+                      ;*********************************************************
+**********************
+                      ;**                      various Functions               
+                     **
+                      ;*********************************************************
+**********************
+                      ;*********************************************************
+**********************
+                      ; RSTTXTSCRN:
+                      ; Clears all the TextRAM ($1000-$1FFF) and all rel. 
+variables
+                      ; Terminates with RTS
+                      ;
+ C12E CE0000          RSTTXTSCRN     LDX     #$0000          ; Clear 
+everything
+ C131 DFD0                           STX     M00D0           ;
+ C133 DFC4                           STX     SETB7           ;
+ C135 DF98                           STX     _6845STRTADRH   ;
+ C137 DF9A                           STX     CursorColumn    ;
+ C139 DF9C                           STX     _6845CRSRH      ;
+ C13B CE1000                         LDX     #TEXTRAM        ;
+ C13E DFCC                           STX     RAMTXTSTART     ;
+ C140 4F                             CLRA                    ;
+ C141 A700            ClearTRAM      STAA    ,X              ;
+ C143 08                             INX                     ;
+ C144 8C1800                         CPX     #TRAMEND        ;  End of TRAM 
+(Ch. from 0x1800 to 0x2000)
+ C147 26F8                           BNE     ClearTRAM       ;
+ C149 39                             RTS                     ;
+                      ;*********************************************************
+**********************
+                      ;*********************************************************
+**********************
+                      ;**                       EPSP Functions                 
+                     **
+                      ;*********************************************************
+**********************
+                      ;*********************************************************
+**********************
+ C14A 96A2            READCHAR       LDAA    TXTBUFA2A3      ; EPSPFUNC: $97
+ C14C 97CE                           STAA    M00CE           ;
+ C14E 9785                           STAA    HDRCSSZ         ;
+ C150 BDC0D6                         JSR     SNDHDR          ;
+*** warning 1: Long branch within short branch range could be optimized
+ C153 DEA0                           LDX     TXTBUFA0A1      ;
+ C155 DF9A                           STX     CursorColumn    ;
+ C157 BDC288                         JSR     SET6845ADD      ;
+ C15A DECC                           LDX     RAMTXTSTART     ;
+ C15C 08                             INX                     ;
+ C15D D6CE                           LDAB    M00CE           ;
+ C15F 3A                             ABX                     ;
+ C160 A600                           LDAA    ,X              ;
+ C162 97D4                           STAA    TMPRDCH         ;
+ C164 DFB0                           STX     TEMPB0B1        ;
+ C166 8603                           LDAA    #$03            ;
+ C168 A700                           STAA    ,X              ;
+ C16A CB02                           ADDB    #$02            ;
+ C16C D7C1                           STAB    RXTXCNT         ;
+ C16E DECC                           LDX     RAMTXTSTART     ;
+ C170 C602                           LDAB    #$02            ;
+ C172 BDC0B1                         JSR     SendB           ;
+ C175 17                             TBA                     ; 'A' holds $02
+ C176 C67F                           LDAB    #$7F            ;
+ C178 D7C7                           STAB    CHKSUM          ;
+ C17A BDC0EC                         JSR     SNDARR2         ; send it from 
+'X'
+ C17D DEB0                           LDX     TEMPB0B1        ;
+ C17F 96D4                           LDAA    TMPRDCH         ;
+ C181 A700                           STAA    ,X              ;
+ C183 2099                           BRA     Send_EOT        ;
+                      ;--------------------------------------;
+ C185 8D08            SCRNSIZE       BSR     LDCHKSM         ; EPSPFUNC: $88 
+and $89
+ C187 CEC659                         LDX     #SCRNSZ8025     ; Reads 
+$02,$50,$19,$03,$92 from EPROM
+ C18A 8602                           LDAA    #$02            ; send two bytes 
+excluding Start, Stop and checksum (=5)
+ C18C 7EC10C                         JMP     SENDPAK         ;
+                                                             ;
+ C18F 8601            LDCHKSM        LDAA    #$01            ;
+ C191 9785            SHDRCSSZ       STAA    HDRCSSZ         ;
+ C193 7EC0D6                         JMP     SNDHDR          ;
+                      ;--------------------------------------;
+ C196 96D0            GCRSRPOS       LDAA    M00D0           ; EPSPFUNC: $8c
+ C198 97D1                           STAA    M00D1           ;
+ C19A 969A                           LDAA    CursorColumn    ;
+ C19C 4C                             INCA                    ;
+ C19D 97D0                           STAA    M00D0           ;
+ C19F 8DEE            SENDTX2        BSR     LDCHKSM         ;
+ C1A1 DE9A                           LDX     CursorColumn    ;
+ C1A3 DFA1                           STX     TXTBUFA1        ; $A1,$A2 is 
+00,00 at first
+ C1A5 8603                           LDAA    #$03            ;
+ C1A7 97A3                           STAA    TXTBUFA3        ; add ETX ($03)
+ C1A9 8602                           LDAA    #$02            ; send 4 char + 
+checksum
+ C1AB 8B02            SENDTXT        ADDA    #$02            ;
+ C1AD 97C1                           STAA    RXTXCNT         ;
+ C1AF 8602                           LDAA    #$02            ;
+ C1B1 97A0                           STAA    TXTBUFA0A1      ; add STX ($02) 
+to $A0
+ C1B3 CE00A0                         LDX     #TXTBUFA0A1     ;
+ C1B6 BDC0EB                         JSR     SNDARR1         ; send it!
+ C1B9 7EC11E                         JMP     Send_EOT        ; send EOT ($04)
+                      ;--------------------------------------;
+ C1BC 5F              GETPOINT       CLRB                    ; EPSPFUNC: $8f
+ C1BD D785                           STAB    HDRCSSZ         ;
+ C1BF DCA0                           LDD     TXTBUFA0A1      ; in A0A1 is the 
+X Pos.
+ C1C1 BDC301                         JSR     CONVXPXLCHAR    ;
+ C1C4 D4CE                           ANDB    M00CE           ;
+ C1C6 2702                           BEQ     ZC1CA           ;
+ C1C8 C601                           LDAB    #$01            ;
+ C1CA D7A1            ZC1CA          STAB    TXTBUFA1        ;
+ C1CC BDC0D6                         JSR     SNDHDR          ;
+ C1CF 8603                           LDAA    #$03            ;
+ C1D1 97A2                           STAA    TXTBUFA2A3      ;
+ C1D3 8601                           LDAA    #$01            ;
+ C1D5 20D4                           BRA     SENDTXT         ;
+                      ;--------------------------------------;
+ C1D7 8603            READLINE       LDAA    #$03            ; EPSPFUNC: $91
+ C1D9 8DB6                           BSR     SHDRCSSZ        ;
+ C1DB 969B                           LDAA    CursorRow       ;
+ C1DD 270C                           BEQ     ZC1EB           ;
+ C1DF BDC515          ZC1DF          JSR     CRSRLFT         ;
+ C1E2 DECC                           LDX     RAMTXTSTART     ;
+ C1E4 A600                           LDAA    ,X              ;
+ C1E6 26F7                           BNE     ZC1DF           ;
+ C1E8 BDC26D                         JSR     INCCRSR         ;
+ C1EB 969B            ZC1EB          LDAA    CursorRow       ;
+ C1ED 97C8                           STAA    TMPCRSRRW       ;
+ C1EF DECC            LOCAL0a        LDX     RAMTXTSTART     ;
+ C1F1 A600                           LDAA    ,X              ;
+ C1F3 2708                           BEQ     LOCAL09         ;
+ C1F5 BDC26D                         JSR     INCCRSR         ;
+ C1F8 BDC288                         JSR     SET6845ADD      ;
+ C1FB 20F2                           BRA     LOCAL0a         ;
+                                                             ;
+ C1FD CE00A0          LOCAL09        LDX     #TXTBUFA0A1     ;
+ C200 96C8                           LDAA    TMPCRSRRW       ;
+ C202 A702                           STAA    $02,X           ;
+ C204 D69B                           LDAB    CursorRow       ;
+ C206 E704                           STAB    $04,X           ;
+ C208 969A                           LDAA    CursorColumn    ;
+ C20A A703                           STAA    $03,X           ;
+ C20C 96D1                           LDAA    M00D1           ;
+ C20E 2705                           BEQ     ZC215           ;
+ C210 4A                             DECA                    ;
+ C211 6C04                           INC     $04,X           ;
+ C213 6F03                           CLR     $03,X           ;
+ C215 A701            ZC215          STAA    $01,X           ;
+ C217 A604                           LDAA    $04,X           ;
+ C219 97C8                           STAA    TMPCRSRRW       ;
+ C21B 4F                             CLRA                    ;
+ C21C 97D0                           STAA    M00D0           ;
+ C21E 8603                           LDAA    #$03            ;
+ C220 A705                           STAA    $05,X           ;
+ C222 8604                           LDAA    #$04            ;
+ C224 2085                           BRA     SENDTXT         ;
+                      ;--------------------------------------;
+ C226 9602            TEXTON_OFF     LDAA    P1DR            ; Char: $F1
+ C228 8802                           EORA    #$02            ; Toggle 
+TXTON_OFF (P1.1)
+ C22A 9702            LOCAL01        STAA    P1DR            ;
+ C22C 203A                           BRA     SENDRESP        ;
+                      ;--------------------------------------;
+ C22E 9602            INVERTTEXT     LDAA    P1DR            ; Char: $F2
+ C230 8801                           EORA    #$01            ; Toggle INVERT 
+(P1.0)
+ C232 20F6                           BRA     LOCAL01         ;
+                      ;--------------------------------------;
+ C234 CEC703          CTRLCHAR       LDX     #SwitchCharset  ; Load End of 
+Control Char Jumptable
+ C237 DFCA                           STX     TEMP16_01       ; holds End of 
+Control Char Jumptable
+ C239 CEC6A3                         LDX     #CTRLTAB        ; Load Start of 
+Control Char Jumptable
+ C23C 8D02                           BSR     EXECSRCH        ;
+ C23E 2016                           BRA     REGULACHAR      ;
+                      ;--------------------------------------;
+ C240 A100            EXECSRCH       CMPA    ,X              ; Search for 
+Function and Jump to it
+ C242 2708                           BEQ     EXECFUNC        ;
+ C244 08                             INX                     ;
+ C245 08                             INX                     ;
+ C246 08                             INX                     ;
+ C247 9CCA                           CPX     TEMP16_01       ; holds End of 
+EPSFUNC or Function Jumptable
+ C249 26F5                           BNE     EXECSRCH        ;
+ C24B 39                             RTS                     ; nothing found, 
+must be a regular character
+                      ;--------------------------------------;
+ C24C 31              EXECFUNC       INS                     ; Execute 
+Function
+ C24D 31                             INS                     ;
+ C24E EE01                           LDX     $01,X           ;
+ C250 6E00                           JMP     ,X              ;
+                      ;--------------------------------------;
+ C252 96A0            WRITECHAR      LDAA    TXTBUFA0A1      ; EPSPFUNC: $92 
+and $98, 'A' holds the Character
+ C254 20DE                           BRA     CTRLCHAR        ; Check is it a 
+Controlcharacter
+                      ;--------------------------------------;
+ C256 8120            REGULACHAR     CMPA    #$20            ; Write a regular 
+character (above $1F)
+ C258 2B0E                           BMI     SENDRESP        ;
+ C25A DECC                           LDX     RAMTXTSTART     ;
+ C25C 847F                           ANDA    #$7F            ; limit to 
+characters < $80
+ C25E 9AC5                           ORAA    CHRTMP          ;
+ C260 A700                           STAA    ,X              ;
+ C262 96C4                           LDAA    SETB7           ;
+ C264 97C5                           STAA    CHRTMP          ;
+ C266 8D05                           BSR     INCCRSR         ;
+ C268 8D1E            SENDRESP       BSR     SET6845ADD      ; Set 6845 Start- 
+and Cursor Address
+ C26A 7EC19F                         JMP     SENDTX2         ; send packets 
+(Header, Text and EOT)
+                      ;--------------------------------------;
+                      ; INCCRSR:
+                      ; Scrolls down when CursorColumn is one less than 
+Char_per_Line
+                      ; Clears CursorColumn 
+                      ; 
+ C26D 969A            INCCRSR        LDAA    CursorColumn    ;
+ C26F 4C                             INCA                    ;
+ C270 979A                           STAA    CursorColumn    ;
+ C272 91D2                           CMPA    Char_per_Line   ;
+ C274 2611                           BNE     ZC287           ;
+ C276 7F009A                         CLR     >CursorColumn   ;
+ C279 7C009B                         INC     >CursorRow      ;
+ C27C C618                           LDAB    #$18            ; no scroll below 
+24
+ C27E D19B                           CMPB    CursorRow       ;
+ C280 2C03                           BGE     ZC285           ;
+ C282 BDC570                         JSR     SCRLUP          ;
+ C285 8D01            ZC285          BSR     SET6845ADD      ;
+ C287 39              ZC287          RTS                     ;
+                      ;--------------------------------------;
+ C288 8D28            SET6845ADD     BSR     CALCRAMPOS      ;
+ C28A DDCC                           STD     RAMTXTSTART     ;
+ C28C C60C                           LDAB    #$0C            ; 
+ C28E F74000                         STAB    M6845_0         ; Set Register c 
+(Start Address H)
+ C291 9698                           LDAA    _6845STRTADRH   ;
+ C293 B74001                         STAA    M6845_1         ;
+ C296 5C                             INCB                    ;
+ C297 F74000                         STAB    M6845_0         ; Set Register d 
+(Start Address L)
+ C29A 9699                           LDAA    _6845STRTADRL   ;
+ C29C B74001                         STAA    M6845_1         ;
+ C29F 5C                             INCB                    ;
+ C2A0 F74000                         STAB    M6845_0         ; Set Register e 
+(Cursor H)
+ C2A3 969C                           LDAA    _6845CRSRH      ;
+ C2A5 B74001                         STAA    M6845_1         ;
+ C2A8 5C                             INCB                    ;
+ C2A9 F74000                         STAB    M6845_0         ; Set Register f 
+(Cursor L)
+ C2AC 969D                           LDAA    _6845CRSRL      ;
+ C2AE B74001                         STAA    M6845_1         ;
+ C2B1 39                             RTS                     ;
+                      ;--------------------------------------;
+ C2B2 C618            CALCRAMPOS     LDAB    #$18            ; $18 = 24 (Max. 
+Rows-1)
+ C2B4 D19B                           CMPB    CursorRow       ;
+ C2B6 2C02                           BGE     LOCAL0d         ;
+ C2B8 D79B                           STAB    CursorRow       ; limit CursorRow 
+to $18 (=24)
+ C2BA D69B            LOCAL0d        LDAB    CursorRow       ;
+ C2BC 96D2                           LDAA    Char_per_Line   ; can be 32, 40, 
+72 or 80
+ C2BE 3D                             MUL                     ; 24*80=0x780 
+(=1920)
+ C2BF DB9A                           ADDB    CursorColumn    ;
+ C2C1 8900                           ADCA    #$00            ; must be < $7D0
+ C2C3 D398                           ADDD    _6845STRTADRH   ;
+ C2C5 DD9C                           STD     _6845CRSRH      ;
+ C2C7 C31000                         ADDD    #TEXTRAM        ;
+ C2CA 39                             RTS                     ;
+                      ;--------------------------------------;
+ C2CB D6A1            SETDISPMOD     LDAB    TXTBUFA1        ; EPSPFUNC: $93
+ C2CD D7D3                           STAB    GRAPHMOD        ; $01 if Graphics 
+Mode
+ C2CF 9602                           LDAA    P1DR            ;
+ C2D1 C101                           CMPB    #$01            ; Check if 
+Graphics Mode
+ C2D3 2614                           BNE     SETTXTMOD       ; Graphics Mode 
+here
+ C2D5 8A40                           ORAA    #$40            ; Set T/G (P1.6)
+ C2D7 9702                           STAA    P1DR            ;
+ C2D9 CEC68F                         LDX     #MC6845_GRAPH   ; Load Settings 
+for Graphics Mode
+ C2DC 8650                           LDAA    #$50            ;
+ C2DE BDC4DE                         JSR     W6845REG2       ;
+ C2E1 CE0000                         LDX     #$0000          ;
+ C2E4 DF98                           STX     _6845STRTADRH   ;
+ C2E6 7EC268                         JMP     SENDRESP        ;
+                      ;--------------------------------------;
+ C2E9 8A02            SETTXTMOD      ORAA    #$02            ; Textmode
+ C2EB 84BF                           ANDA    #$BF            ; Clear T/G 
+(P1.6)
+ C2ED 9702                           STAA    P1DR            ;
+ C2EF BDC4D3                         JSR     CONF80          ; Configure for 
+80 Char. Text
+ C2F2 7EC558                         JMP     Home            ;
+                      ;--------------------------------------;
+ C2F5 DEA0            SETCRSR        LDX     TXTBUFA0A1      ;
+ C2F7 DF9A                           STX     CursorColumn    ;
+ C2F9 BDC288                         JSR     SET6845ADD      ;
+*** warning 1: Long branch within short branch range could be optimized
+ C2FC 2000                           BRA     SRLISTFLG       ; does nothing 
+(jumps back to WAITHNDSHK)
+                      ;--------------------------------------;
+ C2FE 7EC03C          SRLISTFLG      JMP     WAITHNDSHK      ;
+                      ;--------------------------------------;
+ C301 DDD8            CONVXPXLCHAR   STD     TEMPD8D9        ; Converts 
+X-Pixel to Character Pos.
+ C303 8606                           LDAA    #$06            ;
+ C305 97DA                           STAA    M00DA           ;
+ C307 8D62                           BSR     CONV03          ;
+ C309 D6D9                           LDAB    M00D9           ;
+ C30B 5C                             INCB                    ;
+ C30C D7A1                           STAB    TXTBUFA1        ;
+ C30E 7F00A0                         CLR     >TXTBUFA0A1     ;
+ C311 97CE                           STAA    M00CE           ;
+ C313 4F                             CLRA                    ;
+ C314 97D8                           STAA    TEMPD8D9        ;
+ C316 8608                           LDAA    #$08            ;
+ C318 97DA                           STAA    M00DA           ;
+ C31A D6A3                           LDAB    TXTBUFA3        ;
+ C31C D7D9                           STAB    M00D9           ;
+ C31E 8D4B                           BSR     CONV03          ;
+ C320 D6D9                           LDAB    M00D9           ;
+ C322 D7AF                           STAB    TEMPAF          ;
+ C324 C680                           LDAB    #$80            ;
+ C326 3D                             MUL                     ;
+ C327 DDAC                           STD     TEMPACAD        ;
+ C329 8650                           LDAA    #$50            ;
+ C32B D6AF                           LDAB    TEMPAF          ;
+ C32D 3D                             MUL                     ;
+ C32E D3A0                           ADDD    TXTBUFA0A1      ;
+ C330 D7AE                           STAB    TEMPAEAF        ;
+ C332 C480                           ANDB    #$80            ;
+ C334 05                             ASLD                    ;
+ C335 05                             ASLD                    ;
+ C336 05                             ASLD                    ;
+ C337 D6AE                           LDAB    TEMPAEAF        ;
+ C339 C47F                           ANDB    #$7F            ;
+ C33B D3AC                           ADDD    TEMPACAD        ;
+ C33D C38000                         ADDD    #GRAPHICRAM     ;
+ C340 37                             PSHB                    ;
+ C341 36                             PSHA                    ;
+ C342 38                             PULX                    ;
+ C343 8680                           LDAA    #$80            ;
+ C345 D6CE                           LDAB    M00CE           ;
+ C347 2704                           BEQ     CONV02          ;
+ C349 44              CONV01         LSRA                    ;
+ C34A 5A                             DECB                    ;
+ C34B 26FC                           BNE     CONV01          ;
+ C34D E600            CONV02         LDAB    ,X              ;
+ C34F 97CE                           STAA    M00CE           ;
+ C351 39                             RTS                     ;
+                      ;--------------------------------------;
+ C352 8D02            SETPOINT       BSR     PUTPXL          ; EPSPFUNC: $C7
+ C354 20A8            _SRLISTFLG1_   BRA     SRLISTFLG       ; does nothing 
+(jumps back to WAITHNDSHK)
+                      ;--------------------------------------;
+ C356 DCA0            PUTPXL         LDD     TXTBUFA0A1      ; in A0A1 is the 
+X Pos.
+ C358 8DA7                           BSR     CONVXPXLCHAR    ;
+ C35A 7D00A4                         TST     >TXTBUFA4A5     ;
+ C35D 2705                           BEQ     PXL01           ;
+ C35F DACE                           ORAB    M00CE           ;
+ C361 E700            PXL02          STAB    ,X              ;
+ C363 39                             RTS                     ;
+                                                             ;
+ C364 43              PXL01          COMA                    ;
+ C365 97CE                           STAA    M00CE           ;
+ C367 D4CE                           ANDB    M00CE           ;
+ C369 20F6                           BRA     PXL02           ;
+                      ;--------------------------------------;
+ C36B CE0009          CONV03         LDX     #$0009          ;
+ C36E DCD8                           LDD     TEMPD8D9        ;
+ C370 90DA            CONV04         SUBA    M00DA           ;
+ C372 2402                           BCC     CONV05          ;
+ C374 9BDA                           ADDA    M00DA           ;
+ C376 59              CONV05         ROLB                    ;
+ C377 49                             ROLA                    ;
+ C378 09                             DEX                     ;
+ C379 26F5                           BNE     CONV04          ;
+ C37B D7D9                           STAB    M00D9           ;
+ C37D 46                             RORA                    ;
+ C37E 59                             ROLB                    ;
+ C37F 53                             COMB                    ;
+ C380 C401                           ANDB    #$01            ;
+ C382 D7D8                           STAB    TEMPD8D9        ;
+ C384 7300D9                         COM     >M00D9          ;
+ C387 39                             RTS                     ;
+                      ;--------------------------------------;
+ C388 8D09            DRAWLINE       BSR     DRWLN           ; EPSPFUNC: $C8
+ C38A 20C8                           BRA     _SRLISTFLG1_    ; does nothing 
+(jumps back to WAITHNDSHK)
+                      ;--------------------------------------;
+ C38C 43              ZC38C          COMA                    ;
+ C38D 53                             COMB                    ;
+ C38E CB01                           ADDB    #$01            ;
+ C390 8900                           ADCA    #$00            ;
+ C392 39                             RTS                     ;
+                      ;--------------------------------------;
+                      ; This funtion draws a line from       ;
+                      ;  X1 , Y1 to  X2 , Y2                 ;
+                      ; A0A1 A2A3   A4A5 A6A7                ;
+                      ;--------------------------------------;
+ C393 CE01DF          DRWLN          LDX     #$01DF          ; Limit to 479 
+(prob. x direction)
+ C396 9CA0                           CPX     TXTBUFA0A1      ; check Limit
+ C398 2A02                           BPL     LIN01           ;
+ C39A DFA0                           STX     TXTBUFA0A1      ;
+ C39C 9CA4            LIN01          CPX     TXTBUFA4A5      ; check Limit
+ C39E 2A02                           BPL     LIN02           ;
+ C3A0 DFA4                           STX     TXTBUFA4A5      ;
+ C3A2 CE00C7          LIN02          LDX     #$C7            ; Limit to 199
+ C3A5 9CA2                           CPX     TXTBUFA2A3      ; check Limit
+ C3A7 2A02                           BPL     LIN03           ;
+ C3A9 DFA2                           STX     TXTBUFA2A3      ;
+ C3AB 9CA6            LIN03          CPX     TXTBUFA6A7      ; check Limit
+ C3AD 2A02                           BPL     LIN04           ;
+ C3AF DFA6                           STX     TXTBUFA6A7      ;
+ C3B1 CE0000          LIN04          LDX     #$0000          ;
+ C3B4 DFBE                           STX     TEMPBEBF        ;
+ C3B6 DFB8                           STX     TEMPB8B9        ;
+ C3B8 DFBC                           STX     TEMPBCBD        ;
+ C3BA DFBA                           STX     TEMPBABB        ;
+ C3BC DEA0                           LDX     TXTBUFA0A1      ;
+ C3BE DFB0                           STX     TEMPB0B1        ;
+ C3C0 DEA2                           LDX     TXTBUFA2A3      ;
+ C3C2 DFB2                           STX     TEMPB2B3        ;
+ C3C4 DCA4                           LDD     TXTBUFA4A5      ;
+ C3C6 93A0                           SUBD    TXTBUFA0A1      ;
+ C3C8 2A05                           BPL     LIN05           ;
+ C3CA 8DC0                           BSR     ZC38C           ;
+ C3CC 7C00BE                         INC     >TEMPBEBF       ;
+ C3CF DDB4            LIN05          STD     TEMPB4B5        ;
+ C3D1 DCA6                           LDD     TXTBUFA6A7      ;
+ C3D3 93A2                           SUBD    TXTBUFA2A3      ;
+ C3D5 2A05                           BPL     LIN06           ;
+ C3D7 8DB3                           BSR     ZC38C           ;
+ C3D9 7C00BF                         INC     >TEMPBF         ;
+ C3DC DDB6            LIN06          STD     TEMPB6B7        ;
+ C3DE 96A8                           LDAA    TXTBUFA8A9      ; $01, used only 
+in TestPicture
+ C3E0 97A4                           STAA    TXTBUFA4A5      ;
+ C3E2 DEB4                           LDX     TEMPB4B5        ;
+ C3E4 DFD8                           STX     TEMPD8D9        ;
+ C3E6 9CB6                           CPX     TEMPB6B7        ;
+ C3E8 2B07                           BMI     LIN07           ;
+ C3EA 7C00BC                         INC     >TEMPBCBD       ;
+ C3ED DEB6                           LDX     TEMPB6B7        ;
+ C3EF 2006                           BRA     LIN08           ;
+                                                             ;
+ C3F1 DEB6            LIN07          LDX     TEMPB6B7        ;
+ C3F3 DFD8                           STX     TEMPD8D9        ;
+ C3F5 DEB4                           LDX     TEMPB4B5        ;
+ C3F7 DFDA            LIN08          STX     M00DA           ;
+ C3F9 BDC466                         JSR     LIN17           ;
+ C3FC DED8                           LDX     TEMPD8D9        ;
+ C3FE DFC2                           STX     TEMPC2C3        ;
+ C400 BDC490          LIN09          JSR     ZC490           ;
+ C403 8D0E                           BSR     LIN0a           ;
+ C405 96BC                           LDAA    TEMPBCBD        ;
+ C407 2715                           BEQ     LIN0c           ;
+ C409 8D33                           BSR     LIN10           ;
+ C40B DEB4                           LDX     TEMPB4B5        ;
+ C40D DFD8                           STX     TEMPD8D9        ;
+ C40F DEB6                           LDX     TEMPB6B7        ;
+ C411 2013                           BRA     LIN0d           ;
+                                                             ;
+ C413 DEB4            LIN0a          LDX     TEMPB4B5        ;
+ C415 2606                           BNE     LIN0b           ;
+ C417 DEB6                           LDX     TEMPB6B7        ;
+ C419 2602                           BNE     LIN0b           ;
+ C41B 31                             INS                     ;
+ C41C 31                             INS                     ;
+ C41D 39              LIN0b          RTS                     ;
+                                                             ;
+ C41E 8D32            LIN0c          BSR     LIN14           ;
+ C420 DEB6                           LDX     TEMPB6B7        ;
+ C422 DFD8                           STX     TEMPD8D9        ;
+ C424 DEB4                           LDX     TEMPB4B5        ;
+ C426 DFDA            LIN0d          STX     M00DA           ;
+ C428 8D3C                           BSR     LIN17           ;
+ C42A DED8                           LDX     TEMPD8D9        ;
+ C42C 9CC2                           CPX     TEMPC2C3        ;
+ C42E 2B06                           BMI     LIN0f           ;
+ C430 20CE                           BRA     LIN09           ;
+                                                             ;
+ C432 8D0A            LIN0e          BSR     LIN10           ;
+ C434 20CA                           BRA     LIN09           ;
+                                                             ;
+ C436 96BC            LIN0f          LDAA    TEMPBCBD        ;
+ C438 27F8                           BEQ     LIN0e           ;
+ C43A 8D16                           BSR     LIN14           ;
+ C43C 20C2                           BRA     LIN09           ;
+                                                             ;
+ C43E DEB4            LIN10          LDX     TEMPB4B5        ;
+ C440 270F                           BEQ     LIN13           ;
+ C442 09                             DEX                     ;
+ C443 DFB4                           STX     TEMPB4B5        ;
+ C445 DEB0                           LDX     TEMPB0B1        ;
+ C447 96BE                           LDAA    TEMPBEBF        ;
+ C449 2603                           BNE     LIN11           ;
+ C44B 08                             INX                     ;
+ C44C 2001                           BRA     LIN12           ;
+                                                             ;
+ C44E 09              LIN11          DEX                     ;
+ C44F DFB0            LIN12          STX     TEMPB0B1        ;
+ C451 39              LIN13          RTS                     ;
+                                                             ;
+ C452 DEB6            LIN14          LDX     TEMPB6B7        ;
+ C454 27FB                           BEQ     LIN13           ;
+ C456 09                             DEX                     ;
+ C457 DFB6                           STX     TEMPB6B7        ;
+ C459 DEB2                           LDX     TEMPB2B3        ;
+ C45B 96BF                           LDAA    TEMPBF          ;
+ C45D 2603                           BNE     LIN15           ;
+ C45F 08                             INX                     ;
+ C460 2001                           BRA     LIN16           ;
+                                                             ;
+ C462 09              LIN15          DEX                     ;
+ C463 DFB2            LIN16          STX     TEMPB2B3        ;
+ C465 39                             RTS                     ;
+                                                             ;
+ C466 DCD8            LIN17          LDD     TEMPD8D9        ;
+ C468 05                             ASLD                    ;
+ C469 05                             ASLD                    ;
+ C46A 05                             ASLD                    ;
+ C46B 05                             ASLD                    ;
+ C46C 05                             ASLD                    ;
+ C46D 05                             ASLD                    ;
+ C46E DDD8                           STD     TEMPD8D9        ;
+ C470 8611                           LDAA    #$11            ;
+ C472 97C1                           STAA    RXTXCNT         ;
+ C474 4F                             CLRA                    ;
+ C475 5F                             CLRB                    ;
+ C476 93DA            LIN18          SUBD    M00DA           ;
+ C478 2402                           BCC     LIN19           ;
+ C47A D3DA                           ADDD    M00DA           ;
+ C47C 7900D9          LIN19          ROL     >M00D9          ;
+ C47F 7900D8                         ROL     >TEMPD8D9       ;
+ C482 59                             ROLB                    ;
+ C483 49                             ROLA                    ;
+ C484 7A00C1                         DEC     >RXTXCNT        ;
+ C487 26ED                           BNE     LIN18           ;
+ C489 7300D9                         COM     >M00D9          ;
+ C48C 7300D8                         COM     >TEMPD8D9       ;
+ C48F 39                             RTS                     ;
+                                                             ;
+ C490 DEB0            ZC490          LDX     TEMPB0B1        ;
+ C492 DFA0                           STX     TXTBUFA0A1      ;
+ C494 DEB2                           LDX     TEMPB2B3        ;
+ C496 DFA2                           STX     TXTBUFA2A3      ;
+ C498 7EC356                         JMP     PUTPXL          ; actually put 
+the pixel on screen
+                      ;--------------------------------------;
+ C49B 2014            SETLINETERM    BRA     _WAITHNDSHK1_   ;
+                      ;--------------------------------------;
+ C49D 7D00D3          GRAMSETUP      TST     >GRAPHMOD       ; Check if 
+Graphics Mode
+ C4A0 270C                           BEQ     LOCAL06         ; if not Return
+ C4A2 CE8000          ClearGRAM      LDX     #GRAPHICRAM     ;
+ C4A5 4F                             CLRA                    ;
+ C4A6 A700            LOOP07         STAA    ,X              ;
+ C4A8 08                             INX                     ;
+ C4A9 8CC000                         CPX     #GRAMEND        ;
+ C4AC 26F8                           BNE     LOOP07          ;
+ C4AE 39              LOCAL06        RTS                     ;
+                      ;--------------------------------------;
+ C4AF 8DEC            CLRGRAPH       BSR     GRAMSETUP       ; EPSPFUNC: $ca
+ C4B1 7EC03C          _WAITHNDSHK1_  JMP     WAITHNDSHK      ;
+                      ;--------------------------------------;
+ C4B4 8DE7            Graphic_CLR    BSR     GRAMSETUP       ; Char: $F6
+ C4B6 7EC268          _SENDRESP1_    JMP     SENDRESP        ;
+                      ;--------------------------------------;
+ C4B9 8D18            Set_80Char     BSR     CONF80          ; Char: $F8
+ C4BB 20F9                           BRA     _SENDRESP1_     ;
+                      ;--------------------------------------;
+ C4BD 8648            Set_72Char     LDAA    #$48            ; Char: $F7
+ C4BF 8D14                           BSR     CONF72          ;
+ C4C1 C101                           CMPB    #$01            ;
+ C4C3 27F1                           BEQ     _SENDRESP1_     ;
+ C4C5 CE0148                         LDX     #$0148          ;
+ C4C8 FF4000                         STX     M6845_0         ; Set Register 1 
+(Hor. Displayed) to 0x48 - 72
+ C4CB CE0250                         LDX     #$0250          ;
+ C4CE FF4000                         STX     M6845_0         ; Set Register 2 
+(Hor. Sync Pos.) to 0x50 - 80
+ C4D1 20E3                           BRA     _SENDRESP1_     ;
+                      ;--------------------------------------;
+ C4D3 8650            CONF80         LDAA    #$50            ;
+ C4D5 C601            CONF72         LDAB    #$01            ;
+ C4D7 D1D3                           CMPB    GRAPHMOD        ; Check if 
+Graphics Mode
+ C4D9 2739                           BEQ     _RTS2_          ; if yes Return
+ C4DB CEC65E                         LDX     #MC6845_7280Z   ;
+ C4DE 97D2            W6845REG2      STAA    Char_per_Line   ; Akku can be 72 
+or 80
+ C4E0 8680                           LDAA    #$80            ;
+ C4E2 36              W6845REG1      PSHA                    ;
+ C4E3 5F                             CLRB                    ;
+ C4E4 F74000          LOCAL0c        STAB    M6845_0         ; Write all 16 
+Registers of 6845
+ C4E7 A600                           LDAA    ,X              ;
+ C4E9 B74001                         STAA    M6845_1         ;
+ C4EC 08                             INX                     ;
+ C4ED 5C                             INCB                    ;
+ C4EE C110                           CMPB    #$10            ; Check if 
+finished
+ C4F0 26F2                           BNE     LOCAL0c         ;
+ C4F2 9602                           LDAA    P1DR            ;
+ C4F4 847F                           ANDA    #$7F            ; Mask P1.7 
+(HIGHRES) off
+ C4F6 33                             PULB                    ; Holds $80
+ C4F7 1B                             ABA                     ;
+ C4F8 9702                           STAA    P1DR            ; Set HIGHRES
+ C4FA 7EC12E                         JMP     RSTTXTSCRN      ;
+                      ;--------------------------------------;
+ C4FD D6D2            DelLine        LDAB    Char_per_Line   ; Char: $04 and 
+$05
+ C4FF D09A                           SUBB    CursorColumn    ;
+ C501 8D08                           BSR     ZC50B           ;
+ C503 2064                           BRA     _SENDRESP2_     ;
+                      ;--------------------------------------;
+ C505 D6D2            CLRLINE        LDAB    Char_per_Line   ; belongs to 
+SCRLUP
+ C507 DBD2                           ADDB    Char_per_Line   ; two lines
+ C509 C020                           SUBB    #$20            ; minus 32 
+characters
+ C50B 4F              ZC50B          CLRA                    ;
+ C50C DECC                           LDX     RAMTXTSTART     ;
+ C50E A700            ZC50E          STAA    ,X              ; Clear the next 
+~1.5 Lines
+ C510 08                             INX                     ;
+ C511 5A                             DECB                    ;
+ C512 26FA                           BNE     ZC50E           ;
+ C514 39              _RTS2_         RTS                     ;
+                      ;--------------------------------------;
+ C515 7A009A          CRSRLFT        DEC     >CursorColumn   ;
+ C518 2A0A                           BPL     ZC524           ;
+ C51A 96D2                           LDAA    Char_per_Line   ;
+ C51C 4A                             DECA                    ;
+ C51D 979A                           STAA    CursorColumn    ;
+ C51F 7A009B                         DEC     >CursorRow      ;
+ C522 2B32                           BMI     ZC556           ;
+ C524 7EC288          ZC524          JMP     SET6845ADD      ;
+                      ;--------------------------------------;
+ C527 DECC            DeleteChar     LDX     RAMTXTSTART     ; Char: $08
+ C529 09                             DEX                     ;
+ C52A E600                           LDAB    ,X              ;
+ C52C 273B                           BEQ     _SENDRESP2_     ;
+ C52E 8DE5                           BSR     CRSRLFT         ;
+ C530 DECC                           LDX     RAMTXTSTART     ;
+ C532 E601            ZC532          LDAB    $01,X           ;
+ C534 E700                           STAB    ,X              ;
+ C536 08                             INX                     ;
+ C537 C100                           CMPB    #$00            ;
+ C539 26F7                           BNE     ZC532           ;
+ C53B 202C                           BRA     _SENDRESP2_     ;
+                      ;--------------------------------------;
+ C53D D69A            TABHOR         LDAB    CursorColumn    ; Char: $09
+ C53F 8608            ZC53F          LDAA    #$08            ;
+ C541 C008                           SUBB    #$08            ;
+ C543 2AFA                           BPL     ZC53F           ;
+ C545 CB08                           ADDB    #$08            ;
+ C547 10                             SBA                     ;
+ C548 9B9A                           ADDA    CursorColumn    ;
+ C54A 91D2                           CMPA    Char_per_Line   ;
+ C54C 2604                           BNE     ZC552           ;
+ C54E 4F                             CLRA                    ;
+ C54F 7C009B                         INC     >CursorRow      ;
+ C552 979A            ZC552          STAA    CursorColumn    ;
+ C554 2013                           BRA     _SENDRESP2_     ;
+                      ;--------------------------------------;
+ C556 31              ZC556          INS                     ;
+ C557 31                             INS                     ;
+                      ;--------------------------------------;
+ C558 CE0000          Home           LDX     #$0000          ; Char: $0B
+ C55B DFC8                           STX     TMPCRSRRW       ;
+ C55D DF9A                           STX     CursorColumn    ;
+ C55F 2008                           BRA     _SENDRESP2_     ;
+                      ;--------------------------------------;
+ C561 BDC12E          ClearScreen    JSR     RSTTXTSCRN      ; Char: $0C
+ C564 2003                           BRA     _SENDRESP2_     ;
+                      ;--------------------------------------;
+ C566 7F009A          Enter          CLR     >CursorColumn   ; Char: $01 and 
+$0D
+ C569 7EC268          _SENDRESP2_    JMP     SENDRESP        ;
+                      ;--------------------------------------;
+ C56C 8D02            ZC56C          BSR     SCRLUP          ;
+ C56E 20F9            _SENDRESP6_    BRA     _SENDRESP2_     ;
+                      ;--------------------------------------;
+                      ; SCRLUP: 
+                      ; Moves Window up one Line, deletes the next ~1.5 Lines 
+in Memory, adjusts 6845 Start Address and RAM Start Addr.
+                      ; CursorRow must be $18 to Scroll, Clears CursorColumn
+                      ; Terminates with RTS
+                      ;
+ C570 DE98            SCRLUP         LDX     _6845STRTADRH   ;
+ C572 D6D2                           LDAB    Char_per_Line   ;
+ C574 3A                             ABX                     ;
+ C575 DF98                           STX     _6845STRTADRH   ; add 
+Char_per_Line to _6845STRTADRH
+ C577 DECC                           LDX     RAMTXTSTART     ;
+ C579 3A                             ABX                     ;
+ C57A 7C009B                         INC     >CursorRow      ;
+ C57D 8618                           LDAA    #$18            ; load last row 
+(=24)
+ C57F 919B                           CMPA    CursorRow       ;
+ C581 2C91                           BGE     _RTS2_          ; no scroll below 
+24
+ C583 979B                           STAA    CursorRow       ; limit CursorRow 
+to $18
+ C585 7F009A                         CLR     >CursorColumn   ;
+ C588 DFCC                           STX     RAMTXTSTART     ; add 
+Char_per_Line to RAMTXTSTART
+ C58A 9602                           LDAA    P1DR            ;
+ C58C 84BF                           ANDA    #$BF            ; Clear T/G 
+(P1.6)
+ C58E 9702                           STAA    P1DR            ;
+ C590 9698                           LDAA    _6845STRTADRH   ;
+ C592 8407                           ANDA    #$07            ; Limit to 7FF
+ C594 9798                           STAA    _6845STRTADRH   ;
+ C596 96CC                           LDAA    RAMTXTSTART     ;
+ C598 8417                           ANDA    #$17            ; limit to $17FF
+ C59A 97CC                           STAA    RAMTXTSTART     ;
+ C59C BDC288                         JSR     SET6845ADD      ;
+ C59F 7EC505                         JMP     CLRLINE         ; clear the next 
+~1.5 Lines
+                      ;--------------------------------------; belongs to 
+MovCRSR_Up
+                      ; SCRLDWN:
+                      ; doesn't actually scroll anywhere, it just moves the 
+cursor up until first line
+                      ;
+ C5A2 DC98            SCRLDWN        LDD     _6845STRTADRH   ;
+ C5A4 27C8                           BEQ     _SENDRESP6_     ;
+ C5A6 969B                           LDAA    CursorRow       ;
+ C5A8 4A                             DECA                    ;
+ C5A9 979B                           STAA    CursorRow       ;
+ C5AB D0D2                           SUBB    Char_per_Line   ;
+ C5AD 8200                           SBCA    #$00            ;
+ C5AF DD98                           STD     _6845STRTADRH   ;
+ C5B1 20BB                           BRA     _SENDRESP6_     ;
+                      ;--------------------------------------;
+ C5B3 DECC            ToggleInsertMd LDX     RAMTXTSTART     ; Char: $12
+ C5B5 08              ZC5B5          INX                     ;
+ C5B6 A600                           LDAA    ,X              ;
+ C5B8 26FB                           BNE     ZC5B5           ;
+ C5BA A701                           STAA    $01,X           ;
+ C5BC 09              ZC5BC          DEX                     ;
+ C5BD A600                           LDAA    ,X              ;
+ C5BF A701                           STAA    $01,X           ;
+ C5C1 9CCC                           CPX     RAMTXTSTART     ;
+ C5C3 2CF7                           BGE     ZC5BC           ;
+ C5C5 8620                           LDAA    #$20            ;
+ C5C7 A701                           STAA    $01,X           ;
+ C5C9 7EC19F                         JMP     SENDTX2         ;
+                      ;--------------------------------------;
+ C5CC 96C6            Set_CRSR_Blink LDAA    _6845CRSRREG    ; Char: $F5
+ C5CE 8860                           EORA    #$60            ;
+ C5D0 97C6                           STAA    _6845CRSRREG    ;
+                      ;--------------------------------------;
+ C5D2 96C6            Set_CRSR_On    LDAA    _6845CRSRREG    ; Char: $16
+ C5D4 2002                           BRA     LOCAL05         ;
+                      ;--------------------------------------;
+ C5D6 8620            Set_CRSR_Off   LDAA    #$20            ; Char: $17
+ C5D8 8D58            LOCAL05        BSR     Write_CRSR_Reg  ;
+ C5DA 7EC268          _SENDRESP3_    JMP     SENDRESP        ;
+                      ;--------------------------------------;
+ C5DD 8D02            DelScreen      BSR     CLRSCRN         ; Char: $1A
+ C5DF 20F9            _SENDRESP7_    BRA     _SENDRESP3_     ;
+                      ;--------------------------------------;
+ C5E1 96CC            CLRSCRN        LDAA    RAMTXTSTART     ;
+ C5E3 8417                           ANDA    #$17            ; limit to 17FF 
+(now $1FFF)
+ C5E5 97CC                           STAA    RAMTXTSTART     ;
+ C5E7 DECC                           LDX     RAMTXTSTART     ;
+ C5E9 4F                             CLRA                    ;
+ C5EA A700            LOCAL02        STAA    ,X              ;
+ C5EC 08                             INX                     ;
+ C5ED 8C1800                         CPX     #TRAMEND        ; End of TRAM 
+(Ch. from 0x1800 to 0x2000)
+ C5F0 26F8                           BNE     LOCAL02         ;
+ C5F2 39                             RTS                     ;
+                      ;--------------------------------------;
+ C5F3 7C009A          MovCRSR_Rgt    INC     >CursorColumn   ; Char: $1C
+ C5F6 D6D2                           LDAB    Char_per_Line   ;
+ C5F8 D19A                           CMPB    CursorColumn    ;
+ C5FA 26E3                           BNE     _SENDRESP7_     ;
+ C5FC 7F009A                         CLR     >CursorColumn   ;
+ C5FF 7C009B                         INC     >CursorRow      ;
+ C602 20DB                           BRA     _SENDRESP7_     ;
+                      ;--------------------------------------;
+ C604 BDC515          MovCRSR_Lft    JSR     CRSRLFT         ; Char: $1D
+ C607 20D6                           BRA     _SENDRESP7_     ;
+                      ;--------------------------------------;
+ C609 969B            MovCRSR_Up     LDAA    CursorRow       ; Char: $10 and 
+$1E
+ C60B 27D2                           BEQ     _SENDRESP7_     ;
+ C60D 8119                           CMPA    #$19            ;
+ C60F 2B03                           BMI     ZC614           ;
+ C611 7EC5A2                         JMP     SCRLDWN         ;
+*** warning 1: Long branch within short branch range could be optimized
+                                                             ;
+ C614 4A              ZC614          DECA                    ;
+ C615 979B            ZC615          STAA    CursorRow       ;
+ C617 20C6                           BRA     _SENDRESP7_     ;
+                      ;--------------------------------------;
+ C619 96D1            Linefeed       LDAA    M00D1           ; Char: $0A
+ C61B 2709                           BEQ     MovCRSR_Dwn     ;
+ C61D 7F00D1                         CLR     >M00D1          ;
+ C620 969B                           LDAA    CursorRow       ;
+ C622 8118                           CMPA    #$18            ;
+ C624 2BB9                           BMI     _SENDRESP7_     ;
+                      ;--------------------------------------;
+ C626 969B            MovCRSR_Dwn    LDAA    CursorRow       ; Char: $11 and 
+$1F
+ C628 8118                           CMPA    #$18            ; compare with 
+last line (=24)
+ C62A 2B03                           BMI     ZC62F           ;
+ C62C 7EC56C                         JMP     ZC56C           ; if in last 
+line: jump to SCRLUP + SENDRESP
+                                                             ;
+ C62F 4C              ZC62F          INCA                    ; not in last 
+line
+ C630 20E3                           BRA     ZC615           ; STA CursorRow + 
+SENDRESP
+                      ;--------------------------------------; belongs to 
+Set_CRSR_Off
+ C632 C60A            Write_CRSR_Reg LDAB    #$0A            ;
+ C634 F74000                         STAB    M6845_0         ;
+ C637 B74001                         STAA    M6845_1         ;
+ C63A 39              _RTS1_         RTS                     ;
+                      ;--------------------------------------;
+ C63B 8D31            Set_40Char     BSR     CONF40          ; Char: $F4
+ C63D 20A0            _SENDRESP8_    BRA     _SENDRESP7_     ;
+                      ;--------------------------------------;
+ C63F 8620            Set_32Char     LDAA    #$20            ; Char: $F3
+ C641 8D2D                           BSR     CONF32          ;
+ C643 C101                           CMPB    #$01            ;
+ C645 2798                           BEQ     _SENDRESP7_     ;
+ C647 CE0120                         LDX     #$0120          ;  Set Register 1 
+(Hor. Displayed) to 0x20 - 32
+ C64A FF4000                         STX     M6845_0         ;
+ C64D CE0228                         LDX     #$0228          ;  Set Register 2 
+(Hor. Sync Pos.) to 0x28 - 40
+ C650 FF4000                         STX     M6845_0         ;
+ C653 20E8            _SENDRESP9_    BRA     _SENDRESP8_     ;
+                      ;--------------------------------------;
+ C655 020003FB        SendPKT_00     FCB     $02,$00,$03,$FB ;
+ C659 0250190392      SCRNSZ8025     FCB     $02,$50,$19,$03,$92 ; Message 
+Packet for 80x25 Screen Size
+ C65E 62              MC6845_7280Z   FCB     $62             ; Set Register 0 
+(H Total) - 98
+ C65F 50                             FCB     $50             ; Set Register 1 
+(H Displayed) - 80
+ C660 54                             FCB     $54             ; Set Register 2 
+(H Sync. Pos.) - 84
+ C661 29                             FCB     $29             ; Set Register 3 
+(Sync. Width) - 41
+ C662 1E                             FCB     $1E             ; Set Register 4 
+(V Total) - 30
+ C663 00                             FCB     $00             ; Set Register 5 
+(V Total Adj.)
+ C664 19                             FCB     $19             ; Set Register 6 
+(V Displayed) - 25
+ C665 1B                             FCB     $1B             ; Set Register 7 
+(V Sync. Pos.) - 27
+ C666 A2                             FCB     $A2             ; Set Register 8 
+(Interlace Md. and Skew) - 162
+ C667 09                             FCB     $09             ; Set Register 9 
+(Max. Scanline Address)
+ C668 00                             FCB     $00             ; Set Register 10 
+(Crsr Start)
+ C669 10                             FCB     $10             ; Set Register 11 
+(Crsr End) - 16
+ C66A 00                             FCB     $00             ; Set Register 12 
+(Start Address H)
+ C66B 00                             FCB     $00             ; Set Register 13 
+(Start Address L)
+ C66C 00                             FCB     $00             ; Set Register 14 
+(Crsr H)
+ C66D 00                             FCB     $00             ; Set Register 15 
+(Crsr L)
+                      ;--------------------------------------;
+ C66E 8628            CONF40         LDAA    #$28            ;
+ C670 D6D3            CONF32         LDAB    GRAPHMOD        ;
+ C672 C101                           CMPB    #$01            ; Check if 
+Graphics Mode
+ C674 27C4                           BEQ     _RTS1_          ; if yes Return
+ C676 CEC67F                         LDX     #MC6845_3240Z   ;
+ C679 97D2                           STAA    Char_per_Line   ; Akku can be 32, 
+40
+ C67B 4F                             CLRA                    ;
+ C67C 7EC4E2                         JMP     W6845REG1       ;
+                      ;--------------------------------------;
+ C67F 30              MC6845_3240Z   FCB     $30             ; Set Register 0 
+(H Total) - 48
+ C680 28                             FCB     $28             ; Set Register 1 
+(H Displayed) - 40
+ C681 2B                             FCB     $2B             ; Set Register 2 
+(H Sync. Pos.) - 43
+ C682 43                             FCB     $43             ; Set Register 3 
+(Sync. Width) - 67
+ C683 1D                             FCB     $1D             ; Set Register 4 
+(V Total) - 29
+ C684 0C                             FCB     $0C             ; Set Register 5 
+(V Total Adj.) - 12
+ C685 19                             FCB     $19             ; Set Register 6 
+(V Displayed) - 25
+ C686 1B                             FCB     $1B             ; Set Register 7 
+(V Sync. Pos.) - 27
+ C687 A0                             FCB     $A0             ; Set Register 8 
+(Interlace Md. and Skew) - 160
+ C688 09                             FCB     $09             ; Set Register 9 
+(Max. Scanline Address)
+ C689 00                             FCB     $00             ; Set Register 10 
+(Crsr Start)
+ C68A 10                             FCB     $10             ; Set Register 11 
+(Crsr End) - 16
+ C68B 00                             FCB     $00             ; Set Register 12 
+(Start Address H)
+ C68C 00                             FCB     $00             ; Set Register 13 
+(Start Address L)
+ C68D 00                             FCB     $00             ; Set Register 14 
+(Crsr H)
+ C68E 00                             FCB     $00             ; Set Register 15 
+(Crsr L)
+ C68F 62              MC6845_GRAPH   FCB     $62             ; Set Register 0 
+(H Total) - 98
+ C690 50                             FCB     $50             ; Set Register 1 
+(H Displayed) - 80
+ C691 53                             FCB     $53             ; Set Register 2 
+(H Sync. Pos.) - 83
+ C692 29                             FCB     $29             ; Set Register 3 
+(Sync. Width) - 41
+ C693 26                             FCB     $26             ; Set Register 4 
+(V Total) - 38
+ C694 00                             FCB     $00             ; Set Register 5 
+(V Total Adj.)
+ C695 19                             FCB     $19             ; Set Register 6 
+(V Displayed) - 25
+ C696 1F                             FCB     $1F             ; Set Register 7 
+(V Sync. Pos.) - 31
+ C697 A0                             FCB     $A0             ; Set Register 8 
+(Interlace Md. and Skew) - 160
+ C698 07                             FCB     $07             ; Set Register 9 
+(Max. Scanline Address)
+ C699 00                             FCB     $00             ; Set Register 10 
+(Crsr Start)
+ C69A 07                             FCB     $07             ; Set Register 11 
+(Crsr End)
+ C69B 00                             FCB     $00             ; Set Register 12 
+(Start Address H)
+ C69C 00                             FCB     $00             ; Set Register 13 
+(Start Address L)
+ C69D 00                             FCB     $00             ; Set Register 14 
+(Crsr H)
+ C69E 00                             FCB     $00             ; Set Register 15 
+(Crsr L)
+ C69F 0101            HDRDAT01       FCB     $01,$01         ;
+ C6A1 2030            HDRDAT02       FCB     $20,$30         ;
+                      ;--------------------------------------;
+ C6A3 01              CTRLTAB        FCB     $01             ;
+ C6A4 C566                           FDB     Enter           ;
+ C6A6 0E                             FCB     $0E             ; CTRL + N - ?
+ C6A7 C71C                           FDB     SPCLCHAR        ;
+ C6A9 04                             FCB     $04             ; CTRL + D or -> 
+- Move Cursor
+ C6AA C4FD                           FDB     DelLine         ;
+ C6AC 05                             FCB     $05             ; CTRL + E - 
+Delete to EOL
+ C6AD C4FD                           FDB     DelLine         ;
+ C6AF 06                             FCB     $06             ; CTRL + F - 
+Cursor to right edge
+ C6B0 C714                           FDB     TGLINVERS       ;
+ C6B2 07                             FCB     $07             ; CTRL + G - ? 
+Make Sound (in MH20 Emulator)
+ C6B3 C70C                           FDB     TGLINTENS       ;
+ C6B5 08                             FCB     $08             ; CTRL + H - 
+Delete one char.
+ C6B6 C527                           FDB     DeleteChar      ;
+ C6B8 09                             FCB     $09             ; CTRL + I - Hor. 
+TAB
+ C6B9 C53D                           FDB     TABHOR          ;
+ C6BB 0A                             FCB     $0A             ; CTRL + J - 
+Linefeed
+ C6BC C619                           FDB     Linefeed        ;
+ C6BE 0B                             FCB     $0B             ; CTRL + K - Home
+ C6BF C558                           FDB     Home            ;
+ C6C1 0C                             FCB     $0C             ; CTRL + L - 
+Clear Screen
+ C6C2 C561                           FDB     ClearScreen     ;
+ C6C4 0D                             FCB     $0D             ; CTRL + M - 
+Enter
+ C6C5 C566                           FDB     Enter           ;
+ C6C7 10                             FCB     $10             ; CTRL + P - Move 
+Window up - new functions
+ C6C8 C609                           FDB     MovCRSR_Up      ;
+ C6CA 11                             FCB     $11             ; CTRL + Q - Move 
+Window down - new functions
+ C6CB C626                           FDB     MovCRSR_Dwn     ;
+ C6CD 12                             FCB     $12             ; CTRL + R - 
+Toggle Insert Mode
+ C6CE C5B3                           FDB     ToggleInsertMd  ;
+ C6D0 16                             FCB     $16             ; CTRL + V - Make 
+Cursor visible
+ C6D1 C5D2                           FDB     Set_CRSR_On     ;
+ C6D3 17                             FCB     $17             ; CTRL + W - Make 
+Cursor invisible
+ C6D4 C5D6                           FDB     Set_CRSR_Off    ;
+ C6D6 1A                             FCB     $1A             ; CTRL + Z - 
+Delete Cursor to end of screen
+ C6D7 C5DD                           FDB     DelScreen       ;
+ C6D9 1C                             FCB     $1C             ; CTRL + \ - Move 
+Cursor right
+ C6DA C5F3                           FDB     MovCRSR_Rgt     ;
+ C6DC 1D                             FCB     $1D             ; CTRL + ] - Move 
+Cursor left
+ C6DD C604                           FDB     MovCRSR_Lft     ;
+ C6DF 1E                             FCB     $1E             ; CTRL + ^ - Move 
+Cursor up
+ C6E0 C609                           FDB     MovCRSR_Up      ;
+ C6E2 1F                             FCB     $1F             ; CTRL + _ - Move 
+Cursor down
+ C6E3 C626                           FDB     MovCRSR_Dwn     ;
+ C6E5 F0                             FCB     $F0             ; CTRL + 0 - 
+TestPicture (Graphic Mode) (Enter Screen1,1, then CTRL+0)
+ C6E6 C77C                           FDB     TestPicture     ;
+ C6E8 F1                             FCB     $F1             ; CTRL + 1 - Text 
+On/Off
+ C6E9 C226                           FDB     TEXTON_OFF      ;
+ C6EB F2                             FCB     $F2             ; CTRL + 2 - 
+Inverted Text
+ C6EC C22E                           FDB     INVERTTEXT      ;
+ C6EE F3                             FCB     $F3             ; CTRL + 3 - 32 
+Characters
+ C6EF C63F                           FDB     Set_32Char      ;
+ C6F1 F4                             FCB     $F4             ; CTRL + 4 - 40 
+Characters
+ C6F2 C63B                           FDB     Set_40Char      ;
+ C6F4 F5                             FCB     $F5             ; CTRL + 5 - 
+Cursor Blink
+ C6F5 C5CC                           FDB     Set_CRSR_Blink  ;
+ C6F7 F6                             FCB     $F6             ; CTRL + 6 - 
+Graphics Clear Screen
+ C6F8 C4B4                           FDB     Graphic_CLR     ;
+ C6FA F7                             FCB     $F7             ; CTRL + 7 - 72 
+Characters
+ C6FB C4BD                           FDB     Set_72Char      ;
+ C6FD F8                             FCB     $F8             ; CTRL + 8 - 80 
+Characters
+ C6FE C4B9                           FDB     Set_80Char      ;
+ C700 F9                             FCB     $F9             ; CTRL + 9 - 
+second Charset
+ C701 C703                           FDB     SwitchCharset   ;
+ C703 9602            SwitchCharset  LDAA    P1DR            ;
+ C705 8820                           EORA    #$20            ; Toggle Charset 
+(P1.5)
+                      ;--------------------------------------;
+ C707 9702            ZC707          STAA    P1DR            ;
+ C709 7EC268          _SENDRESP4_    JMP     SENDRESP        ;
+                      ;--------------------------------------;
+ C70C 9602            TGLINTENS      LDAA    P1DR            ; Char: $07, 
+Toggle INTENSITY (P1.2 - Pin15), Set INVERSE (P1.3 - Pin16)
+ C70E 8A08                           ORAA    #$08            ; 
+ C710 8804                           EORA    #$04            ;
+ C712 20F3                           BRA     ZC707           ;
+                      ;--------------------------------------;
+ C714 9602            TGLINVERS      LDAA    P1DR            ; Char: $06, 
+Toggle INVERSE (P1.3 - Pin16), Set INTENSITY (P1.2 - Pin15)
+ C716 8A04                           ORAA    #$04            ;
+ C718 8808                           EORA    #$08            ;
+ C71A 20EB                           BRA     ZC707           ;
+                      ;--------------------------------------;
+ C71C 8680            SPCLCHAR       LDAA    #$80            ; Char: $0E, Sets 
+Bit 7 of the next character
+ C71E 98C4                           EORA    SETB7           ;
+ C720 97C4                           STAA    SETB7           ;
+ C722 20E5                           BRA     _SENDRESP4_     ;
+                      ;-----------------------0123456789012345678901234567890123
+456789
+ C724 42697474652C20  GREETING       FCC     'Bitte, "SCREEN 1,0" eingeben!'
+ C72B 2253435245454E
+ C732 20312C30222065
+ C739 696E676562656E
+ C740 21
+ C741 04                             FCB     $04
+
+                      ;--------------------------------------;
+ C742 88              EPSPFUNC       FCB     $88             ; READ SCREEN 
+SIZE (L.C)
+ C743 C185                           FDB     SCRNSIZE        ;
+ C745 89                             FCB     $89             ; GET PHYSICAL 
+SCREEN SIZE (L.C)
+ C746 C185                           FDB     SCRNSIZE        ;
+ C748 8C                             FCB     $8C             ; GET CURSOR 
+POSITION
+ C749 C196                           FDB     GCRSRPOS        ;
+ C74B 8F                             FCB     $8F             ; GET POINT ON 
+THE DISPLAY (L.C)
+ C74C C1BC                           FDB     GETPOINT        ;
+ C74E 91                             FCB     $91             ; READ THE EXTEND 
+OF CURRENT LINE (L.C)
+ C74F C1D7                           FDB     READLINE        ;
+ C751 92                             FCB     $92             ; WRITE ONE 
+CHARACTER TO VIRTUAL SCREEN (L.C)
+ C752 C252                           FDB     WRITECHAR       ;
+ C754 93                             FCB     $93             ; SET DISPLAY 
+MODE (C)
+ C755 C2CB                           FDB     SETDISPMOD      ;
+ C757 97                             FCB     $97             ; READ CHARACTERS 
+FROM VS. (L,C)
+ C758 C14A                           FDB     READCHAR        ;
+ C75A 98                             FCB     $98             ; WRITE ONE 
+CHARACTER TO VS AND GET EXTEND OF NEW CURSOR POSITION.(L,C)
+ C75B C252                           FDB     WRITECHAR       ;
+ C75D C2                             FCB     $C2             ; SET CURSOR 
+POSITION ON THE VIRTUAL SCREEN (L.C)
+ C75E C2F5                           FDB     SETCRSR         ;
+ C760 C5                             FCB     $C5             ; SET LIST FLAG 
+(L.C)
+ C761 C2FE                           FDB     SRLISTFLG       ;
+ C763 C6                             FCB     $C6             ; RESET LIST FLAG 
+(L.C)
+ C764 C2FE                           FDB     SRLISTFLG       ;
+ C766 C7                             FCB     $C7             ; SET POINT TO 
+DISPLAY (L.C)
+ C767 C352                           FDB     SETPOINT        ;
+ C769 C8                             FCB     $C8             ; DRAW LINE TO 
+DISPLAY (L.C)
+ C76A C388                           FDB     DRAWLINE        ;
+ C76C C9                             FCB     $C9             ; SET LINE 
+TERMINATE POSITION (L.C)
+ C76D C49B                           FDB     SETLINETERM     ;
+ C76F CA                             FCB     $CA             ; CLEAR THE 
+GRAPHICS SCREEN. (L.C)
+ C770 C4AF                           FDB     CLRGRAPH        ;
+ C772 CB                             FCB     $CB             ; SET SCRLUPSPEED 
+(C)
+ C773 C12B                           FDB     DISABLED        ;
+ C775 CF                             FCB     $CF             ; COLOR SET 
+SELECT (C) 
+ C776 C12B                           FDB     DISABLED        ;
+ C778 D4                             FCB     $D4             ; ?
+ C779 C12B                           FDB     DISABLED        ;
+ C77B 01              EPSEND         FCB     $01             ;
+                      ;--------------------------------------;
+ C77C 7D00D3          TestPicture    TST     >GRAPHMOD       ; Char: $F0, 
+Check if Graphics Mode
+ C77F 2732                           BEQ     _SENDRESP5_     ; if no Return
+ C781 BDC49D                         JSR     GRAMSETUP       ;
+ C784 860D                           LDAA    #$0D            ;
+ C786 97D3                           STAA    GRAPHMOD        ;
+ C788 CEC7B6                         LDX     #DATATAB        ;
+ C78B DFCA                           STX     TEMP16_01       ;
+ C78D DECA            TP01           LDX     TEMP16_01       ;
+ C78F EC00                           LDD     ,X              ;
+ C791 DDA0                           STD     TXTBUFA0A1      ;
+ C793 EC02                           LDD     $02,X           ;
+ C795 DDA2                           STD     TXTBUFA2A3      ;
+ C797 EC04                           LDD     $04,X           ;
+ C799 DDA4                           STD     TXTBUFA4A5      ;
+ C79B EC06                           LDD     $06,X           ;
+ C79D DDA6                           STD     TXTBUFA6A7      ;
+ C79F 8601                           LDAA    #$01            ;
+ C7A1 97A8                           STAA    TXTBUFA8A9      ;
+ C7A3 C604                           LDAB    #$04            ;
+ C7A5 3A                             ABX                     ; increase 4 
+words
+ C7A6 DFCA                           STX     TEMP16_01       ;
+ C7A8 BDC393                         JSR     DRWLN           ;
+ C7AB 7A00D3                         DEC     >GRAPHMOD       ;
+ C7AE 26DD                           BNE     TP01            ;
+ C7B0 7C00D3                         INC     >GRAPHMOD       ;
+ C7B3 7EC268          _SENDRESP5_    JMP     SENDRESP        ;
+                      ;--------------------------------------;
+                      ;                         X0      Y0  ->  X1      Y1   ; 
+Line from X1Y1 to X2Y2
+                      ;                       A0  A1  A2  A3  A4  A5  A6  A7
+ C7B6 00B40000        DATATAB        FCB     $00,$B4,$00,$00 ; 0 (180,0)
+ C7BA 00B400BF                       FCB     $00,$B4,$00,$BF ; 1 (180,191)
+ C7BE 012C00BF                       FCB     $01,$2C,$00,$BF ; 2 (300,191)
+ C7C2 012C0000                       FCB     $01,$2C,$00,$00 ; 3 (300,0)
+ C7C6 00730000                       FCB     $00,$73,$00,$00 ; 4 (115,0)
+ C7CA 00730032                       FCB     $00,$73,$00,$32 ; 5 (115,50)
+ C7CE 016D0032                       FCB     $01,$6D,$00,$32 ; 6 (365,50)
+ C7D2 016D008D                       FCB     $01,$6D,$00,$8D ; 7 (365,141)
+ C7D6 0073008D                       FCB     $00,$73,$00,$8D ; 8 (115,141)
+ C7DA 007300BF                       FCB     $00,$73,$00,$BF ; 9 (115,191)
+ C7DE 016D00BF                       FCB     $01,$6D,$00,$BF ; 10 (365,191)
+ C7E2 016D0000                       FCB     $01,$6D,$00,$00 ; 11 (365,0)
+ C7E6 00730000                       FCB     $00,$73,$00,$00 ; 12 (115,0)
+ C7EA 007300BF                       FCB     $00,$73,$00,$BF ; 13 (115,191)
+ C7EE 77                             FCB     $77
+
+ C7EF 3B              hdlr_NMI       RTI                              ;C7EF: 
+3B
+ C7F0 C7EFC7EFC7EFC7  unused         FCB     $C7,$EF,$C7,$EF,$C7,$EF,$C7,$EF
+ C7F7 EF
+ C7F8 C7EFC7EFC7EFC0                 FCB     $C7,$EF,$C7,$EF,$C7,$EF,$C0,$00
+ C7FF 00
+                              ORG     $ffF0
+
+ FFF0 C7EF            svec_IRQ_SCI FDB     hdlr_NMI                 ;FFF0: C7 
+EF
+ FFF2 C7EF            svec_IRQ_T0F FDB     hdlr_NMI                 ;FFF2: C7 
+EF
+ FFF4 C7EF            svec_IRQ_OCF FDB     hdlr_NMI                 ;FFF4: C7 
+EF
+ FFF6 C7EF            svec_IRQ_ICF FDB     hdlr_NMI                 ;FFF6: C7 
+EF
+ FFF8 C7EF            svec_IRQ_EXT FDB     hdlr_NMI                 ;FFF8: C7 
+EF
+ FFFA C7EF            svec_SWI FDB     hdlr_NMI                 ;FFFA: C7 EF
+ FFFC C7EF            svec_NMI FDB     hdlr_NMI                 ;FFFC: C7 EF
+ FFFE C000            svec_RST FDB     hdlr_RST                 ;FFFE: C0 00
+
+                              END
+
+6 warning(s) in pass 2.
+
+SYMBOL TABLE
+ CALCRAMPOS 02 C2B2 CHAR_PER_LINE 00 00D2    CHKSUM 00 00C7    CHRTMP 00 00C5
+ CLEARGRAM 02 C4A2 CLEARSCREEN 02 C561 CLEARTRAM 02 C141  CLRGRAPH 02 C4AF
+   CLRLINE 02 C505   CLRSCRN 02 C5E1      CNTH 00 0009    CONF32 02 C670
+    CONF40 02 C66E    CONF72 02 C4D5    CONF80 02 C4D3    CONV01 02 C349
+    CONV02 02 C34D    CONV03 02 C36B    CONV04 02 C370    CONV05 02 C376
+ CONVXPXLCHAR 02 C301   CRSRLFT 02 C515  CTRLCHAR 02 C234   CTRLTAB 02 C6A3
+ CURSORCOLUMN 00 009A CURSORROW 00 009B   DATATAB 02 C7B6 DELETECHAR 02 C527
+   DELLINE 02 C4FD DELSCREEN 02 C5DD  DISABLED 02 C12B  DRAWLINE 02 C388
+     DRWLN 02 C393     ENTER 02 C566    EPSEND 02 C77B  EPSPFUNC 02 C742
+  EXECFUNC 02 C24C  EXECSRCH 02 C240  GCRSRPOS 02 C196    GETHDR 02 C096
+  GETPOINT 02 C1BC   GETTEXT 02 C06C   GRAMEND 00 C000 GRAMSETUP 02 C49D
+ GRAPHICRAM 00 8000 GRAPHIC_CLR 02 C4B4  GRAPHMOD 00 00D3  GREETING 02 C724
+  HDLR_NMI 02 C7EF  HDLR_RST 02 C000 HDRBUFSTRT 00 0080   HDRCSSZ 00 0085
+  HDRDAT01 02 C69F  HDRDAT02 02 C6A1 HDRFINISHED 02 C0BA   HDRFUNC 00 0083
+    HDRSRC 00 0082   HDRSZFN 00 0084      HOME 02 C558   INCCRSR 02 C26D
+ INVERTTEXT 02 C22E   LDCHKSM 02 C18F     LIN01 02 C39C     LIN02 02 C3A2
+     LIN03 02 C3AB     LIN04 02 C3B1     LIN05 02 C3CF     LIN06 02 C3DC
+     LIN07 02 C3F1     LIN08 02 C3F7     LIN09 02 C400     LIN0A 02 C413
+     LIN0B 02 C41D     LIN0C 02 C41E     LIN0D 02 C426     LIN0E 02 C432
+     LIN0F 02 C436     LIN10 02 C43E     LIN11 02 C44E     LIN12 02 C44F
+     LIN13 02 C451     LIN14 02 C452     LIN15 02 C462     LIN16 02 C463
+     LIN17 02 C466     LIN18 02 C476     LIN19 02 C47C  LINEFEED 02 C619
+   LOCAL01 02 C22A   LOCAL02 02 C5EA   LOCAL05 02 C5D8   LOCAL06 02 C4AE
+   LOCAL09 02 C1FD   LOCAL0A 02 C1EF   LOCAL0C 02 C4E4   LOCAL0D 02 C2BA
+    LOOP01 02 C02F    LOOP02 02 C03A    LOOP03 02 C07B    LOOP04 02 C09A
+    LOOP06 02 C110    LOOP07 02 C4A6     M00CE 00 00CE     M00D0 00 00D0
+     M00D1 00 00D1     M00D9 00 00D9     M00DA 00 00DA   M6845_0 00 4000
+   M6845_1 00 4001 MC6845_3240Z 02 C67F MC6845_7280Z 02 C65E MC6845_GRAPH 02 
+C68F
+ MOVCRSR_DWN 02 C626 MOVCRSR_LFT 02 C604 MOVCRSR_RGT 02 C5F3 MOVCRSR_UP 02 
+C609
+     P1DDR 00 0000      P1DR 00 0002     P2DDR 00 0001      P2DR 00 0003
+    PUTPXL 02 C356     PXL01 02 C364     PXL02 02 C361    RAMEND 00 00FF
+ RAMTXTSTART 00 00CC       RCR 00 0014       RDR 00 0012  READCHAR 02 C14A
+  READLINE 02 C1D7 REGULACHAR 02 C256      RMCR 00 0010 RSTTXTSCRN 02 C12E
+   RXTXCNT 00 00C1   SCRLDWN 02 C5A2    SCRLUP 02 C570  SCRNSIZE 02 C185
+ SCRNSZ8025 02 C659     SENDB 02 C0B1   SENDPAK 02 C10C SENDPKT_00 02 C655
+  SENDRESP 02 C268   SENDTX2 02 C19F   SENDTXT 02 C1AB  SEND_ACK 02 C0AF
+  SEND_EOT 02 C11E SEND_NACK 02 C092 SET6845ADD 02 C288     SETB7 00 00C4
+   SETCRSR 02 C2F5 SETDISPMOD 02 C2CB SETLINETERM 02 C49B  SETPOINT 02 C352
+ SETTXTMOD 02 C2E9 SET_32CHAR 02 C63F SET_40CHAR 02 C63B SET_72CHAR 02 C4BD
+ SET_80CHAR 02 C4B9 SET_CRSR_BLINK 02 C5CC SET_CRSR_OFF 02 C5D6 SET_CRSR_ON 02 
+C5D2
+  SHDRCSSZ 02 C191   SNDARR1 02 C0EB   SNDARR2 02 C0EC    SNDHDR 02 C0D6
+ SNDNONACK 02 C0AA  SPCLCHAR 02 C71C SRLISTFLG 02 C2FE SVEC_IRQ_EXT 02 FFF8
+ SVEC_IRQ_ICF 02 FFF6 SVEC_IRQ_OCF 02 FFF4 SVEC_IRQ_SCI 02 FFF0 SVEC_IRQ_T0F 
+02 FFF2
+  SVEC_NMI 02 FFFC  SVEC_RST 02 FFFE  SVEC_SWI 02 FFFA SWITCHCHARSET 02 C703
+    TABHOR 02 C53D       TDR 00 0013 TEMP16_01 00 00CA  TEMPACAD 00 00AC
+  TEMPAEAF 00 00AE    TEMPAF 00 00AF  TEMPB0B1 00 00B0  TEMPB2B3 00 00B2
+  TEMPB4B5 00 00B4  TEMPB6B7 00 00B6  TEMPB8B9 00 00B8  TEMPBABB 00 00BA
+  TEMPBCBD 00 00BC  TEMPBEBF 00 00BE    TEMPBF 00 00BF  TEMPC2C3 00 00C2
+  TEMPD8D9 00 00D8 TESTPICTURE 02 C77C TEXTON_OFF 02 C226   TEXTRAM 00 1000
+ TGLINTENS 02 C70C TGLINVERS 02 C714 TMPCRSRRW 00 00C8   TMPRDCH 00 00D4
+ TOGGLEINSERTMD 02 C5B3      TP01 02 C78D   TRAMEND 00 1800     TRCSR 00 0011
+ TXTBUFA0A1 00 00A0  TXTBUFA1 00 00A1 TXTBUFA2A3 00 00A2  TXTBUFA3 00 00A3
+ TXTBUFA4A5 00 00A4 TXTBUFA6A7 00 00A6 TXTBUFA8A9 00 00A8    UNUSED 02 C7F0
+ W6845REG1 02 C4E2 W6845REG2 02 C4DE WAITHNDSHK 02 C03C   WAITRXC 02 C064
+ WRITECHAR 02 C252 WRITE_CRSR_REG 02 C632     ZC1CA 02 C1CA     ZC1DF 02 C1DF
+     ZC1EB 02 C1EB     ZC215 02 C215     ZC285 02 C285     ZC287 02 C287
+     ZC38C 02 C38C     ZC490 02 C490     ZC50B 02 C50B     ZC50E 02 C50E
+     ZC524 02 C524     ZC532 02 C532     ZC53F 02 C53F     ZC552 02 C552
+     ZC556 02 C556     ZC56C 02 C56C     ZC5B5 02 C5B5     ZC5BC 02 C5BC
+     ZC614 02 C614     ZC615 02 C615     ZC62F 02 C62F     ZC707 02 C707
+ _6845CRSRH 00 009C _6845CRSRL 00 009D _6845CRSRREG 00 00C6 _6845STRTADRH 00 
+0098
+ _6845STRTADRL 00 0099    _RTS1_ 02 C63A    _RTS2_ 02 C514 _SENDRESP1_ 02 C4B6
+ _SENDRESP2_ 02 C569 _SENDRESP3_ 02 C5DA _SENDRESP4_ 02 C709 _SENDRESP5_ 02 
+C7B3
+ _SENDRESP6_ 02 C56E _SENDRESP7_ 02 C5DF _SENDRESP8_ 02 C63D _SENDRESP9_ 02 
+C653
+ _SRLISTFLG1_ 02 C354 _WAITHNDSHK1_ 02 C4B1
+258 SYMBOLS
+
+0 error(s), 6 warning(s)

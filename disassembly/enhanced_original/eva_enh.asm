@@ -2,7 +2,14 @@
 ;* KK Systems EVA-1 Firmware                        *
 ;* Disassembled and commented 2025 by R. Offner     *
 ;* v1.0                                             *
-;*                                                  *
+;* This is the enhanced (mostly original) Version.  *
+;* This Version works fine with only 16kBit of      *
+;* TextRAM (A11 and A12 must be tied low).          *
+;* Changes are:                                     *
+;* .) Startup screen,                               *
+;* .) extended Test Picture,                        *
+;* .) ROM Start @ $F000,                            *
+;* .) initialisation of the HD6845,                 *
 ;****************************************************
 ;
 ; Very quick remainder how the communication between a HX-20 and the EVA-1 works.
@@ -94,8 +101,6 @@ HDRSRC         EQU     $0082 ;  |
 HDRFUNC        EQU     $0083 ;  |
 HDRSZFN        EQU     $0084 ;  | - SIZ for RX and FNC for TX
 HDRCSSZ        EQU     $0085 ; -| - HCS for RX and SIZ for TX
-WINUPDATE      EQU     $0095 ; Temp Var. 
-WINDOWPOS      EQU     $0096 ; Temp Var. orig. Window Pos. - used for shifting the window
 _6845STRTADRH  EQU     $0098 ; 
 _6845STRTADRL  EQU     $0099 ; 6845 Start Address
 CursorColumn   EQU     $009A ; Colunm of cursor (0..Char_per_Line-1)
@@ -139,22 +144,19 @@ TMPRDCH        EQU     $00D4 ; Temp Var. for READCHAR
 TEMPD8D9       EQU     $00D8
 M00D9          EQU     $00D9
 M00DA          EQU     $00DA
-; from $DC to $FF is free    ; $E5-$FF is used by monitor
 RAMEND         EQU     $00FF
-TEXTRAM        EQU     $1000 ; $1FD5-$1FE4 is used by monitor
-;TRAMEND        EQU     $1F00 ; End of Text Ram +1
-TRAMEND        EQU     $2000 ; End of Text Ram +1
+TEXTRAM        EQU     $1000 ;
+TRAMEND        EQU     $1800 ; End of Text Ram +1
 M6845_0        EQU     $4000
 M6845_1        EQU     $4001
 GRAPHICRAM     EQU     $8000 ; Start of Graphic RAM
-GRAMEND        EQU     $BF00 ; End of Graphic RAM+1 (used for Clear)
-;GRAMEND        EQU     $C000 ; End of Graphic RAM+1 (used for Clear)
+GRAMEND        EQU     $C000 ; End of Graphic RAM+1 (used for Clear)
 
 ;****************************************************
 ;* Program Code / Data Areas                        *
 ;****************************************************
 
-        ORG     $f000
+        ORG     $F000
 
 hdlr_RST       SEI                     ;
                LDS     #RAMEND         ;
@@ -163,7 +165,6 @@ hdlr_RST       SEI                     ;
                STAA    CHKSUM          ;
                STAA    P1DDR           ;
                STAB    P2DDR           ;
-               STAB    WINUPDATE       ;
                LDAA    #$0F            ;
                STAA    P1DR            ; Clear INVERT, TXTON_OFF, GTEXT, TEXT (P1.0-P1.3), Set CHARSET, T/G, HIGHRES (P1.4-P1.7)
                STAB    GRAPHMOD        ;
@@ -178,7 +179,7 @@ hdlr_RST       SEI                     ;
                JSR     CONF40          ;
                JSR     ClearGRAM       ;
                LDS     #GREETING-1     ; Write Text to TextRAM
-               LDX     #$1000          ; Start Position of Text
+               LDX     #TEXTRAM        ; Start Position of Text
 LOOP01         PULA                    ;
                STAA    ,X              ;
                INX                     ;
@@ -567,7 +568,6 @@ LOCAL0d        LDAB    CursorRow       ;
                ADDB    CursorColumn    ;
                ADCA    #$00            ; must be < $7D0
                ADDD    _6845STRTADRH   ;
-               ANDA    #$0F            ; limit to $FFF new
                STD     _6845CRSRH      ;
                ADDD    #TEXTRAM        ;
                RTS                     ;
@@ -907,10 +907,7 @@ ZC50B          CLRA                    ;
                LDX     RAMTXTSTART     ;
 ZC50E          STAA    ,X              ; Clear the next ~1.5 Lines
                INX                     ;
-               CPX     #TRAMEND        ; new
-               BNE     _do_nothing     ; new
-               LDX     #TEXTRAM        ; new
-_do_nothing    DECB                    ;
+               DECB                    ;
                BNE     ZC50E           ;
 _RTS2_         RTS                     ;
 ;--------------------------------------;
@@ -989,16 +986,16 @@ SCRLUP         LDX     _6845STRTADRH   ;
                ANDA    #$BF            ; Clear T/G (P1.6)
                STAA    P1DR            ;
                LDAA    _6845STRTADRH   ;
-               ANDA    #$0F            ; Limit to FFF
+               ANDA    #$07            ; Limit to 7FF
                STAA    _6845STRTADRH   ;
                LDAA    RAMTXTSTART     ;
-               ANDA    #$1F            ; limit to $17FF (now $1FFF)
+               ANDA    #$17            ; limit to $17FF
                STAA    RAMTXTSTART     ;
                JSR     SET6845ADD      ;
                JMP     CLRLINE         ; clear the next ~1.5 Lines
 ;--------------------------------------; belongs to MovCRSR_Up
 ; SCRLDWN:
-; doesn't actually scrolls anywhere, it just moves the up until first line
+; doesn't actually scroll anywhere, it just moves the cursor up until first line
 ;
 SCRLDWN        LDD     _6845STRTADRH   ;
                BEQ     _SENDRESP6_     ;
@@ -1131,41 +1128,6 @@ CONF32         LDAB    GRAPHMOD        ;
                CLRA                    ;
                JMP     W6845REG1       ;
 ;--------------------------------------;
-WinStorePos    LDAA    WINUPDATE       ; 
-               BNE     _nostore_       ; if WINUPDATE == 0
-               LDX     _6845STRTADRH   ;
-               STX     WINDOWPOS       ; store old position
-               INC     >WINUPDATE      ; 
-_nostore_      RTS                     ;
-;--------------------------------------;
-MovWind_Up     BSR     WinStorePos     ;
-               LDD     _6845STRTADRH   ;
-               SUBB    Char_per_Line   ;
-               SBCA    #$00            ;
-               STD     _6845STRTADRH   ;
-               CMPA    #$FF            ; underflow
-               BNE     _all_ok         ;
-               LDA     #$0F            ; window ends @ 0xFFF, so start there again
-               STAA    _6845STRTADRH   ;
-_all_ok        BRA     _SENDRESP9_     ;
-;--------------------------------------;
-MovWind_Dwn    BSR     WinStorePos     ;
-               LDX     _6845STRTADRH   ;
-               LDAB    Char_per_Line   ;
-               ABX                     ;
-               STX     _6845STRTADRH   ; add Char_per_Line to _6845STRTADRH
-               LDAA    _6845STRTADRH   ;
-               ANDA    #$0F            ; Limit to FFF
-               STAA    _6845STRTADRH   ;  
-               BRA     _SENDRESP9_     ;
-;--------------------------------------;
-PutWdwBack     LDX     WINDOWPOS       ;
-               LDAA    WINUPDATE       ; if WINUPDATE == 0 do nothing
-               BEQ     _nothing_       ; 
-               STX     _6845STRTADRH   ;
-               CLR     >WINUPDATE      ;
-_nothing_      BRA     _SENDRESP9_     ;
-;--------------------------------------;
 MC6845_3240Z   FCB     $30             ; Set Register 0 (H Total) - 48
                FCB     $28             ; Set Register 1 (H Displayed) - 40
                FCB     $2B             ; Set Register 2 (H Sync. Pos.) - 43
@@ -1226,15 +1188,11 @@ CTRLTAB        FCB     $01             ;
                FCB     $0D             ; CTRL + M - Enter
                FDB     Enter           ;
                FCB     $10             ; CTRL + P - Move Window up - new functions
-               FDB     MovWind_Up      ;
+               FDB     MovCRSR_Up      ;
                FCB     $11             ; CTRL + Q - Move Window down - new functions
-               FDB     MovWind_Dwn     ;
+               FDB     MovCRSR_Dwn     ;
                FCB     $12             ; CTRL + R - Toggle Insert Mode
                FDB     ToggleInsertMd  ;
-               FCB     $13             ; CTRL + S - Start Monitor
-               FDB     JUMP2MON        ;
-               FCB     $14             ; CTRL + T - Put Window back to original pos
-               FDB     PutWdwBack      ;
                FCB     $16             ; CTRL + V - Make Cursor visible
                FDB     Set_CRSR_On     ;
                FCB     $17             ; CTRL + W - Make Cursor invisible
@@ -1333,7 +1291,7 @@ EPSEND         FCB     $01             ;
 TestPicture    TST     >GRAPHMOD       ; Char: $F0, Check if Graphics Mode
                BEQ     _SENDRESP5_     ; if no Return
                JSR     GRAMSETUP       ;
-               LDAA    #19             ;
+               LDAA    #10             ;
                STAA    GRAPHMOD        ;
                LDX     #DATATAB        ;
                STX     TEMP16_01       ;
@@ -1396,11 +1354,8 @@ GREETING       FCC     '             EVA-1 Reproduction.        '
                FCC     '  CTRL+6: Clear Graphics Screen         '
                FCC     '  CTRL+8: 80 Columns                    '
                FCC     '  CTRL+9: alternate Characterset        '
-               FCC     '  CTRL+0: ?                             '
+               FCC     '  CTRL+0: Testpic. (use w. SCREEN 1,1)  '
                FCB      $00,$00
-JUMP2MON
-               LDX      #$E3B2
-               JMP      ,X
 
 hdlr_NMI       RTI                              ;C7EF: 3B
 
