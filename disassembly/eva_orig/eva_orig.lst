@@ -3,7 +3,10 @@
                       ;* Disassembled and commented 2025 by R. Offner     *
                       ;* v1.0                                             *
                       ;* This is the original Version                     *
-                      ;* without any enhancements                         *
+                      ;* without any enhancements.                        *
+                      ;* While this Version works (more or less)          *
+                      ;* It has some problems in the initialisation of    *
+                      ;* the 6845 (Cursor is shifted)!                    *
                       ;****************************************************
                       ;
                       ; Very quick remainder how the communication between a 
