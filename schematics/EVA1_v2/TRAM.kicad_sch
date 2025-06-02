@@ -7,9 +7,11 @@
 	(title_block
 		(title "EVA1 (Epson Video Adapter) - Text RAM")
 		(date "2025-01-09")
-		(rev "v0.1")
+		(rev "v0.3")
 		(company "100% Offner")
 		(comment 1 "v0.1: Initial Release")
+		(comment 2 "v0.2: Production version")
+		(comment 3 "v0.3: Redesign with SRAM")
 	)
 	(lib_symbols
 		(symbol "74xx:74LS157"
@@ -4706,7 +4708,7 @@
 	)
 	(wire
 		(pts
-			(xy 138.43 128.27) (xy 121.92 128.27)
+			(xy 138.43 128.27) (xy 137.16 128.27)
 		)
 		(stroke
 			(width 0)
@@ -6246,6 +6248,16 @@
 	)
 	(wire
 		(pts
+			(xy 137.16 128.27) (xy 137.16 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "929ef1be-a130-43d3-9ff2-51364e1a01c9")
+	)
+	(wire
+		(pts
 			(xy 166.37 125.73) (xy 166.37 120.65)
 		)
 		(stroke
@@ -6713,16 +6725,6 @@
 			(type default)
 		)
 		(uuid "bab6825a-d55f-4617-a20c-c0d2412d877e")
-	)
-	(wire
-		(pts
-			(xy 121.92 121.92) (xy 121.92 128.27)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bb678f31-779e-4aca-b511-d81c38efddd2")
 	)
 	(wire
 		(pts
@@ -7564,16 +7566,6 @@
 		)
 		(uuid "0dfe3c77-b1b7-45b8-8c9d-d2a024515794")
 	)
-	(text "ch:\nU2 Pin1 to GND!"
-		(exclude_from_sim no)
-		(at 272.542 173.736 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "79ee289a-ace8-4f7d-87d4-de915b7fedb7")
-	)
 	(text "Font\nROM"
 		(exclude_from_sim no)
 		(at 210.82 113.284 0)
@@ -7594,7 +7586,7 @@
 		)
 		(uuid "c7028ef7-77a8-480a-abef-1cf15e1f2e4b")
 	)
-	(text "alternatie Font ROM"
+	(text "alternate Font ROM"
 		(exclude_from_sim no)
 		(at 138.176 193.802 0)
 		(effects
@@ -11719,71 +11711,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+5V")
-		(at 121.92 121.92 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "a0a18f9e-0ca4-4943-9ca1-5a29e8407e94")
-		(property "Reference" "#PWR070"
-			(at 121.92 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 121.92 118.745 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 121.92 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 121.92 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 121.92 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "33dc435f-654a-4877-8276-c71287bf0259")
-		)
-		(instances
-			(project "EVA1_production"
-				(path "/5be3a086-9309-43f4-b37c-0519e88c3e26/a1f5fccf-e4cd-4d36-afd9-e34a93cb1a3c"
-					(reference "#PWR070")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 52.07 59.69 0)
 		(unit 1)
@@ -11844,6 +11771,71 @@
 			(project "EVA1"
 				(path "/5be3a086-9309-43f4-b37c-0519e88c3e26/a1f5fccf-e4cd-4d36-afd9-e34a93cb1a3c"
 					(reference "#PWR028")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 137.16 130.81 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a99cc769-7f57-4b95-8a82-e508aa51162c")
+		(property "Reference" "#PWR170"
+			(at 137.16 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 137.16 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 137.16 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 137.16 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 137.16 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f0115db8-5ab9-4d8a-a7f7-bf46f209cbf8")
+		)
+		(instances
+			(project "EVA1_v2"
+				(path "/5be3a086-9309-43f4-b37c-0519e88c3e26/a1f5fccf-e4cd-4d36-afd9-e34a93cb1a3c"
+					(reference "#PWR170")
 					(unit 1)
 				)
 			)

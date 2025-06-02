@@ -7,9 +7,11 @@
 	(title_block
 		(title "EVA1 (Epson Video Adapter) - Video Output")
 		(date "2025-01-09")
-		(rev "v0.1")
+		(rev "v0.3")
 		(company "100% Offner")
 		(comment 1 "v0.1: Initial Release")
+		(comment 2 "v0.2: Production version")
+		(comment 3 "v0.3: Redesign with SRAM")
 	)
 	(lib_symbols
 		(symbol "74xx:74LS08"

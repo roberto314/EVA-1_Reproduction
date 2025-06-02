@@ -7,9 +7,11 @@
 	(title_block
 		(title "EVA1 (Epson Video Adapter) - Graphic RAM")
 		(date "2025-01-09")
-		(rev "v0.1")
+		(rev "v0.3")
 		(company "100% Offner")
 		(comment 1 "v0.1: Initial Release")
+		(comment 2 "v0.2: Production version")
+		(comment 3 "v0.3: Redesign with SRAM")
 	)
 	(lib_symbols
 		(symbol "74xx:74LS157"
@@ -3256,7 +3258,7 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 55.88) (xy 209.55 55.88)
+			(xy 226.06 55.88) (xy 224.79 55.88)
 		)
 		(stroke
 			(width 0)
@@ -4116,16 +4118,6 @@
 	)
 	(wire
 		(pts
-			(xy 209.55 49.53) (xy 209.55 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "927386c2-33a5-4e76-9f48-a9df0353b935")
-	)
-	(wire
-		(pts
 			(xy 180.34 24.13) (xy 190.5 24.13)
 		)
 		(stroke
@@ -4933,6 +4925,16 @@
 			(type default)
 		)
 		(uuid "f175d055-fe4e-4c31-a4a6-11d6db4f839d")
+	)
+	(wire
+		(pts
+			(xy 224.79 55.88) (xy 224.79 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f2627126-a314-438b-ac02-020d3c2dbce7")
 	)
 	(wire
 		(pts
@@ -7289,6 +7291,71 @@
 	)
 	(symbol
 		(lib_id "power:GND")
+		(at 224.79 57.15 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "505b51ef-05da-44f6-a057-daa503370ef8")
+		(property "Reference" "#PWR70"
+			(at 224.79 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 224.79 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 224.79 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 224.79 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 224.79 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "04de4b34-675c-4666-a57d-2e9ff10fbb28")
+		)
+		(instances
+			(project "EVA1_v2"
+				(path "/5be3a086-9309-43f4-b37c-0519e88c3e26/4b69d599-71e1-4fe9-8a9f-9911911cdfa3"
+					(reference "#PWR70")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
 		(at 114.3 67.31 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -8142,71 +8209,6 @@
 			(project "EVA1_v2"
 				(path "/5be3a086-9309-43f4-b37c-0519e88c3e26/4b69d599-71e1-4fe9-8a9f-9911911cdfa3"
 					(reference "#PWR15")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+5V")
-		(at 209.55 49.53 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "b46b21f1-a6f3-4d4b-af4a-985e38207985")
-		(property "Reference" "#PWR162"
-			(at 209.55 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 209.55 46.355 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 209.55 49.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 209.55 49.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 209.55 49.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1eefd26b-6e46-401d-ab76-0f19625c3d83")
-		)
-		(instances
-			(project "EVA1_v2"
-				(path "/5be3a086-9309-43f4-b37c-0519e88c3e26/4b69d599-71e1-4fe9-8a9f-9911911cdfa3"
-					(reference "#PWR162")
 					(unit 1)
 				)
 			)
