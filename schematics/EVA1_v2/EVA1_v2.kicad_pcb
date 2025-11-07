@@ -8211,7 +8211,7 @@
 		(descr "Sparkfun Pro Micro")
 		(tags "Arduino Sparkfun Pro Micro")
 		(property "Reference" "U21"
-			(at 7.62 -5.08 90)
+			(at 17.9 27.65 180)
 			(layer "F.SilkS")
 			(uuid "1b171a9b-3240-4b02-9da2-c0da16170a0e")
 			(effects
@@ -19626,7 +19626,7 @@
 		(descr "C, Disc series, Radial, pin pitch=5.00mm, , diameter*width=4.7*2.5mm^2, Capacitor, http://www.vishay.com/docs/45233/krseries.pdf")
 		(tags "C Disc series Radial pin pitch 5.00mm  diameter 4.7mm width 2.5mm Capacitor")
 		(property "Reference" "C8"
-			(at 2.5 2.15 90)
+			(at 2.508 -3.504 90)
 			(layer "F.SilkS")
 			(uuid "fc205f67-991b-4c54-bc5c-1b43c94d5ff1")
 			(effects
@@ -21289,7 +21289,7 @@
 			)
 		)
 		(property "Value" "SCLK*2"
-			(at 1.744231 2.679788 180)
+			(at 1.744231 2.679788 0)
 			(layer "F.Fab")
 			(uuid "59ca6451-11d8-4ad6-aeae-ec178dcf6f6a")
 			(effects
@@ -21329,7 +21329,7 @@
 		(path "/b5e35cf2-fc76-411f-960b-d5c9fc80b437")
 		(sheetname "/")
 		(sheetfile "EVA1_v2.kicad_sch")
-		(attr through_hole exclude_from_bom)
+		(attr through_hole)
 		(fp_line
 			(start -1.33 6.41)
 			(end 1.33 6.41)
@@ -24615,7 +24615,7 @@
 		(descr "module CMS SOT223 4 pins")
 		(tags "CMS SOT")
 		(property "Reference" "U33"
-			(at 0 -4.5 0)
+			(at 5.138 0.004 90)
 			(layer "F.SilkS")
 			(uuid "2b9c99e4-df8b-4082-9121-e3ebe8831fc0")
 			(effects
@@ -26694,7 +26694,7 @@
 		(descr "Capacitor SMD 1206 (3216 Metric), square (rectangular) end terminal, IPC_7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor handsolder")
 		(property "Reference" "C108"
-			(at 0 -1.85 90)
+			(at 0 -2.254 90)
 			(layer "F.SilkS")
 			(uuid "29d0b0fc-066f-40d0-84db-76aa27cbff2d")
 			(effects
@@ -31081,7 +31081,7 @@
 		(descr "C, Disc series, Radial, pin pitch=5.00mm, , diameter*width=4.7*2.5mm^2, Capacitor, http://www.vishay.com/docs/45233/krseries.pdf")
 		(tags "C Disc series Radial pin pitch 5.00mm  diameter 4.7mm width 2.5mm Capacitor")
 		(property "Reference" "C13"
-			(at 2.5 -2.5 0)
+			(at 2.5 -3.65 0)
 			(layer "F.SilkS")
 			(uuid "8b760412-ab86-42a2-805a-65ec29f2ff53")
 			(effects
@@ -35129,7 +35129,7 @@
 		(descr "Capacitor SMD 1206 (3216 Metric), square (rectangular) end terminal, IPC_7351 nominal with elongated pad for handsoldering. (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor handsolder")
 		(property "Reference" "C113"
-			(at 0 -1.85 0)
+			(at -0.25 -2.25 0)
 			(layer "F.SilkS")
 			(uuid "b0de6241-37dc-4dbc-8346-b3b651140c5a")
 			(effects
@@ -44333,7 +44333,7 @@
 		(descr "Micro SD, SMD, right-angle, push-pull (https://media.digikey.com/PDF/Data%20Sheets/Hirose%20PDFs/DM3D-SF.pdf)")
 		(tags "Micro SD")
 		(property "Reference" "J10"
-			(at -0.025 -7.625 0)
+			(at 8.475 5.05 0)
 			(layer "F.SilkS")
 			(uuid "38764ece-d74e-4f7a-b855-8c6e3d8415e6")
 			(effects
