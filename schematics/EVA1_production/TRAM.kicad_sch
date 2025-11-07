@@ -8620,6 +8620,16 @@
 		)
 		(uuid "7b28e044-8c08-4339-b932-b10c7b7629ca")
 	)
+	(text "when grounding A11 everything is fine!"
+		(exclude_from_sim no)
+		(at 125.476 51.562 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "90d1a3fe-4355-42ac-9f6b-f79f35afa118")
+	)
 	(text "Text\nRAM"
 		(exclude_from_sim no)
 		(at 166.624 43.18 0)
@@ -8629,6 +8639,16 @@
 			)
 		)
 		(uuid "c7028ef7-77a8-480a-abef-1cf15e1f2e4b")
+	)
+	(text "check why there is a strange \nrollover when A11 is connected!"
+		(exclude_from_sim no)
+		(at 13.97 140.97 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "dfa90ded-f550-45c8-8dfa-a8d7b83a843a")
 	)
 	(text "alternatie Font ROM"
 		(exclude_from_sim no)
