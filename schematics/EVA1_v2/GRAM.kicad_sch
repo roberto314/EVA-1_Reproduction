@@ -6885,7 +6885,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "74LS157"
+		(property "Value" "74ALS157"
 			(at 119.0341 128.27 0)
 			(effects
 				(font
@@ -7128,7 +7128,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "74LS245"
+		(property "Value" "74HCT245"
 			(at 211.7441 105.41 0)
 			(effects
 				(font
@@ -7513,7 +7513,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "74LS157"
+		(property "Value" "74ALS157"
 			(at 163.4841 78.74 0)
 			(effects
 				(font
@@ -7625,7 +7625,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "74LS157"
+		(property "Value" "74ALS157"
 			(at 116.4941 22.86 0)
 			(effects
 				(font
@@ -8064,7 +8064,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "74LS157"
+		(property "Value" "74ALS157"
 			(at 112.6841 77.47 0)
 			(effects
 				(font
@@ -8308,7 +8308,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "74LS165"
+		(property "Value" "74HCT165"
 			(at 265.0841 113.03 0)
 			(effects
 				(font
