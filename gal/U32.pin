@@ -1,0 +1,25 @@
+
+
+ Pin # | Name     | Pin Type
+-----------------------------
+   1   | A10      | Input
+   2   | A11      | Input
+   3   | A12      | Input
+   4   | A13      | Input
+   5   | A14      | Input
+   6   | A15      | Input
+   7   | E        | Input
+   8   | RW       | Input
+   9   | RASCLK   | Input
+  10   | GND      | GND
+  11   | nc2      | Input
+  12   | GRAMWE   | Output
+  13   | GRAMCS   | Output
+  14   | nc3      | NC
+  15   | nc4      | NC
+  16   | TRAMCS   | Output
+  17   | TRAMWE   | Output
+  18   | MCCS     | Output
+  19   | CEROM    | Output
+  20   | VCC      | VCC
+

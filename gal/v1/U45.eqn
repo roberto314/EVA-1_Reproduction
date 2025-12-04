@@ -1,10 +1,9 @@
 GAL16V8   ; first line : used GAL
 EVA1 U45;
-; This GAL replaces the 74LS51 and inverts R3
 
 ; 1     2     3      4     5   6   7    8     9      10
-HIRES CLK4M6 CLKE  CLKE2 CLK9M GDAT TG  nc4  nc3   GND
- R3  TDOTCLK  nR3  GPXL   nc5 nc6 nc7  nLTDAT  LTDAT   VCC
+HIRES CLK4M6 CLKE  CLKE2 CLK9M nc2 nc3  nc4  nTRAM   GND
+ R3  TDOTCLK  nR3  TRAM   nc5 nc6 nc7  nLTDAT  LTDAT   VCC
 ; 11    12    13    14    15   16  17  18   19      20
 
 ;EQUATIONS
@@ -16,7 +15,7 @@ LTDAT  = HIRES  & CLKE
        # /HIRES & CLKE2 
 
 nR3 = /R3
-GPXL = GDAT & TG
+TRAM = /nTRAM
 
 DESCRIPTION
 EVA1 Decoder U45

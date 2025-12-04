@@ -36,7 +36,7 @@ Pin 16 = nc6          XOR = 0   AC1 = 0
  26  xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
  27  xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
  28  xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
- 29  xxxx ---- ---- ---- ---- x--- x--- ---- ---- xxxx xxxx
+ 29  xxxx ---- ---- ---- ---- ---- ---- ---- -x-- xxxx xxxx
  30  xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
  31  xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
 
@@ -50,7 +50,7 @@ Pin 15 = nc5          XOR = 0   AC1 = 0
  38  xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
  39  xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
 
-Pin 14 = GPXL         XOR = 1   AC1 = 0
+Pin 14 = TRAM         XOR = 1   AC1 = 0
  40  xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx --x- ---- ----
  41  x--- ---- ---- ---- ---- x--x ---- ---- ---- ---- ----
  42  ---- ---- xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx

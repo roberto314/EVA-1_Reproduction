@@ -1,0 +1,28 @@
+GAL16V8   ; first line : used GAL
+EVA1 U32;
+; This GAL makes Address decoding
+
+; 1     2     3      4     5   6      7      8     9      10
+ A10   A11   A12    A13   A14  A15    E      RW    RASCLK  GND
+ nc2  GRAMWE GRAMCS nc3  nc4  TRAMCS  TRAMWE MCCS  CEROM  VCC
+; 11    12    13    14    15   16     17     18    19      20
+
+; TRAMCS should be @ 1000
+; MCCS should be at 4000
+; GRAMCS should be @ 8000
+; CEROM should be @ C000
+
+;EQUATIONS
+
+/TRAMCS = E & /A15 & /A14 & /A13 & A12        ; 0x1000-1FFF
+/TRAMWE = E & /A15 & /A14 & /A13 & A12 & /RW 
+
+/MCCS   = E & /A15 & A14 & /A13 & /A12 & /A11 & /A10 ; 0x4000-0x43FF
+
+/GRAMCS = E & A15 & /A14       ; 0x8000-BFFF
+/GRAMWE = E & A15 & /A14 & /RW
+
+/CEROM  = E & A15 & A14 ; 0xC000-FFFF
+
+DESCRIPTION
+EVA1 Decoder U32
