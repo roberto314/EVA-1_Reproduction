@@ -25,6 +25,6 @@ EVA1_production: the mostly original EVA1 for production (DRAM does NOT work!)
 
 EVA86-2: from sources on the internet redrawn schematics of the EVA86 (not complete!)
 
-EVA1_v2: new version with SRAM as Textram, Arduino as mass storage and RP2040 for VGA Output.
+EVA1_v2: new version with SRAM as Graphic RAM, Arduino as mass storage and RP2040 for VGA Output.
 
 EVA1_Frontplatte: a drill template for the Strapubox 5003 case
