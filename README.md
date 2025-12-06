@@ -7,7 +7,7 @@ In the folder disassembly are three versions of the original firmware:
 
 * eva_orig: original firmware 
 * eva_enh: enhanced firmware (mostly original)
-* eva_ext: extended firmware (32k Text RAM, additional functions)
+* eva_ext: extended firmware (8k Text RAM, additional functions)
     - see the .asm file for more comments.
 
 The gal folder contains the equations and .jed file for the GAL.
