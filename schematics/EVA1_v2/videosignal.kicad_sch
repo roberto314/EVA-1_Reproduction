@@ -7,11 +7,12 @@
 	(title_block
 		(title "EVA1 (Epson Video Adapter) - Video Output")
 		(date "2025-01-09")
-		(rev "v0.3")
+		(rev "v0.5")
 		(company "100% Offner")
-		(comment 1 "v0.1: Initial Release")
-		(comment 2 "v0.2: Production version")
-		(comment 3 "v0.3: Redesign with SRAM")
+		(comment 1 "v0.2: Production version")
+		(comment 2 "v0.3: Redesign with SRAM")
+		(comment 3 "v0.4: Mounting Holes and Buttons position ch.")
+		(comment 4 "v0.5: ch. XTAL to 18M and fixed IC Var. (HCT, F,...), Pulldown on RPi and conn. for Color")
 	)
 	(lib_symbols
 		(symbol "74xx:74LS08"
@@ -8981,7 +8982,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f805025a-6e8d-4fe4-9776-11277ac87bc2")
-		(property "Reference" "C20"
+		(property "Reference" "C114"
 			(at 39.37 62.2235 0)
 			(effects
 				(font
@@ -9035,7 +9036,7 @@
 		(instances
 			(project "EVA1_v2"
 				(path "/5be3a086-9309-43f4-b37c-0519e88c3e26/71008dda-dbef-4238-9894-aa4b7094e856"
-					(reference "C20")
+					(reference "C114")
 					(unit 1)
 				)
 			)

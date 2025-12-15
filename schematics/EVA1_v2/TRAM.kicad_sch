@@ -7,11 +7,12 @@
 	(title_block
 		(title "EVA1 (Epson Video Adapter) - Text RAM")
 		(date "2025-01-09")
-		(rev "v0.3")
+		(rev "v0.5")
 		(company "100% Offner")
-		(comment 1 "v0.1: Initial Release")
-		(comment 2 "v0.2: Production version")
-		(comment 3 "v0.3: Redesign with SRAM")
+		(comment 1 "v0.2: Production version")
+		(comment 2 "v0.3: Redesign with SRAM")
+		(comment 3 "v0.4: Mounting Holes and Buttons position ch.")
+		(comment 4 "v0.5: ch. XTAL to 18M and fixed IC Var. (HCT, F,...), Pulldown on RPi and conn. for Color")
 	)
 	(lib_symbols
 		(symbol "74xx:74LS157"
