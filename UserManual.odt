@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <office:document xmlns:officeooo="http://openoffice.org/2009/office" xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rpt="http://openoffice.org/2005/report" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:xforms="http://www.w3.org/2002/xforms" office:version="1.3" office:mimetype="application/vnd.oasis.opendocument.text">
- <office:meta><dc:date>2025-05-11T23:10:32.662496241</dc:date><meta:editing-duration>PT16M23S</meta:editing-duration><meta:editing-cycles>3</meta:editing-cycles><meta:generator>LibreOffice/7.3.7.2$Linux_X86_64 LibreOffice_project/30$Build-2</meta:generator><meta:document-statistic meta:table-count="0" meta:image-count="0" meta:object-count="0" meta:page-count="4" meta:paragraph-count="63" meta:word-count="542" meta:character-count="3435" meta:non-whitespace-character-count="2712"/></office:meta>
+ <office:meta><dc:date>2025-12-19T19:08:40.049077355</dc:date><meta:editing-duration>PT35M50S</meta:editing-duration><meta:editing-cycles>7</meta:editing-cycles><meta:generator>LibreOffice/7.3.7.2$Linux_X86_64 LibreOffice_project/30$Build-2</meta:generator><meta:document-statistic meta:table-count="0" meta:image-count="0" meta:object-count="0" meta:page-count="5" meta:paragraph-count="90" meta:word-count="1161" meta:character-count="6719" meta:non-whitespace-character-count="5419"/></office:meta>
  <office:settings>
   <config:config-item-set config:name="ooo:view-settings">
-   <config:config-item config:name="ViewAreaTop" config:type="long">30773</config:config-item>
+   <config:config-item config:name="ViewAreaTop" config:type="long">29131</config:config-item>
    <config:config-item config:name="ViewAreaLeft" config:type="long">0</config:config-item>
-   <config:config-item config:name="ViewAreaWidth" config:type="long">29803</config:config-item>
-   <config:config-item config:name="ViewAreaHeight" config:type="long">28885</config:config-item>
+   <config:config-item config:name="ViewAreaWidth" config:type="long">18055</config:config-item>
+   <config:config-item config:name="ViewAreaHeight" config:type="long">17383</config:config-item>
    <config:config-item config:name="ShowRedlineChanges" config:type="boolean">true</config:config-item>
    <config:config-item config:name="InBrowseMode" config:type="boolean">false</config:config-item>
    <config:config-item-map-indexed config:name="Views">
     <config:config-item-map-entry>
      <config:config-item config:name="ViewId" config:type="string">view2</config:config-item>
-     <config:config-item config:name="ViewLeft" config:type="long">14721</config:config-item>
-     <config:config-item config:name="ViewTop" config:type="long">42986</config:config-item>
+     <config:config-item config:name="ViewLeft" config:type="long">2501</config:config-item>
+     <config:config-item config:name="ViewTop" config:type="long">81919</config:config-item>
      <config:config-item config:name="VisibleLeft" config:type="long">0</config:config-item>
-     <config:config-item config:name="VisibleTop" config:type="long">30773</config:config-item>
-     <config:config-item config:name="VisibleRight" config:type="long">29801</config:config-item>
-     <config:config-item config:name="VisibleBottom" config:type="long">59656</config:config-item>
+     <config:config-item config:name="VisibleTop" config:type="long">29131</config:config-item>
+     <config:config-item config:name="VisibleRight" config:type="long">18053</config:config-item>
+     <config:config-item config:name="VisibleBottom" config:type="long">46512</config:config-item>
      <config:config-item config:name="ZoomType" config:type="short">0</config:config-item>
      <config:config-item config:name="ViewLayoutColumns" config:type="short">1</config:config-item>
      <config:config-item config:name="ViewLayoutBookMode" config:type="boolean">false</config:config-item>
@@ -47,7 +47,7 @@
    <config:config-item config:name="DisableOffPagePositioning" config:type="boolean">false</config:config-item>
    <config:config-item config:name="SubtractFlysAnchoredAtFlys" config:type="boolean">false</config:config-item>
    <config:config-item config:name="PropLineSpacingShrinksFirstLine" config:type="boolean">true</config:config-item>
-   <config:config-item config:name="ApplyParagraphMarkFormatToNumbering" config:type="boolean">false</config:config-item>
+   <config:config-item config:name="ApplyParagraphMarkFormatToNumbering" config:type="boolean">true</config:config-item>
    <config:config-item config:name="GutterAtTop" config:type="boolean">false</config:config-item>
    <config:config-item config:name="TreatSingleColumnBreakAsPageBreak" config:type="boolean">false</config:config-item>
    <config:config-item config:name="EmbedSystemFonts" config:type="boolean">false</config:config-item>
@@ -60,11 +60,11 @@
    <config:config-item config:name="ClippedPictures" config:type="boolean">false</config:config-item>
    <config:config-item config:name="FloattableNomargins" config:type="boolean">false</config:config-item>
    <config:config-item config:name="UnbreakableNumberings" config:type="boolean">false</config:config-item>
-   <config:config-item config:name="HeaderSpacingBelowLastPara" config:type="boolean">false</config:config-item>
+   <config:config-item config:name="HeaderSpacingBelowLastPara" config:type="boolean">true</config:config-item>
    <config:config-item config:name="AllowPrintJobCancel" config:type="boolean">true</config:config-item>
    <config:config-item config:name="UseOldPrinterMetrics" config:type="boolean">false</config:config-item>
-   <config:config-item config:name="TabOverMargin" config:type="boolean">false</config:config-item>
-   <config:config-item config:name="TabsRelativeToIndent" config:type="boolean">true</config:config-item>
+   <config:config-item config:name="TabOverMargin" config:type="boolean">true</config:config-item>
+   <config:config-item config:name="TabsRelativeToIndent" config:type="boolean">false</config:config-item>
    <config:config-item config:name="UseOldNumbering" config:type="boolean">false</config:config-item>
    <config:config-item config:name="InvertBorderSpacing" config:type="boolean">false</config:config-item>
    <config:config-item config:name="PrintPaperFromSetup" config:type="boolean">false</config:config-item>
@@ -72,7 +72,7 @@
    <config:config-item config:name="CurrentDatabaseCommandType" config:type="int">0</config:config-item>
    <config:config-item config:name="LinkUpdateMode" config:type="short">1</config:config-item>
    <config:config-item config:name="AddParaSpacingToTableCells" config:type="boolean">true</config:config-item>
-   <config:config-item config:name="FrameAutowidthWithMorePara" config:type="boolean">false</config:config-item>
+   <config:config-item config:name="FrameAutowidthWithMorePara" config:type="boolean">true</config:config-item>
    <config:config-item config:name="CurrentDatabaseCommand" config:type="string"/>
    <config:config-item config:name="PrinterIndependentLayout" config:type="string">high-resolution</config:config-item>
    <config:config-item config:name="ApplyUserData" config:type="boolean">true</config:config-item>
@@ -88,7 +88,7 @@
    <config:config-item config:name="ChartAutoUpdate" config:type="boolean">true</config:config-item>
    <config:config-item config:name="PrinterSetup" config:type="base64Binary"/>
    <config:config-item config:name="AddParaTableSpacingAtStart" config:type="boolean">true</config:config-item>
-   <config:config-item config:name="Rsid" config:type="int">1109626</config:config-item>
+   <config:config-item config:name="Rsid" config:type="int">1735050</config:config-item>
    <config:config-item config:name="EmbeddedDatabaseName" config:type="string"/>
    <config:config-item config:name="FieldAutoUpdate" config:type="boolean">true</config:config-item>
    <config:config-item config:name="OutlineLevelYieldsNumbering" config:type="boolean">false</config:config-item>
@@ -102,10 +102,10 @@
    <config:config-item config:name="AddParaLineSpacingToTableCells" config:type="boolean">true</config:config-item>
    <config:config-item config:name="UseFormerObjectPositioning" config:type="boolean">false</config:config-item>
    <config:config-item config:name="PrintGraphics" config:type="boolean">true</config:config-item>
-   <config:config-item config:name="SurroundTextWrapSmall" config:type="boolean">false</config:config-item>
+   <config:config-item config:name="SurroundTextWrapSmall" config:type="boolean">true</config:config-item>
    <config:config-item config:name="ConsiderTextWrapOnObjPos" config:type="boolean">false</config:config-item>
-   <config:config-item config:name="MsWordCompTrailingBlanks" config:type="boolean">false</config:config-item>
-   <config:config-item config:name="TabAtLeftIndentForParagraphsInList" config:type="boolean">false</config:config-item>
+   <config:config-item config:name="MsWordCompTrailingBlanks" config:type="boolean">true</config:config-item>
+   <config:config-item config:name="TabAtLeftIndentForParagraphsInList" config:type="boolean">true</config:config-item>
    <config:config-item config:name="PrintRightPages" config:type="boolean">true</config:config-item>
    <config:config-item config:name="TabOverSpacing" config:type="boolean">false</config:config-item>
    <config:config-item config:name="IgnoreFirstLineIndentInNumbering" config:type="boolean">false</config:config-item>
@@ -114,18 +114,18 @@
    <config:config-item config:name="PrintProspectRTL" config:type="boolean">false</config:config-item>
    <config:config-item config:name="PrintEmptyPages" config:type="boolean">true</config:config-item>
    <config:config-item config:name="DoNotResetParaAttrsForNumFont" config:type="boolean">false</config:config-item>
-   <config:config-item config:name="AddFrameOffsets" config:type="boolean">false</config:config-item>
+   <config:config-item config:name="AddFrameOffsets" config:type="boolean">true</config:config-item>
    <config:config-item config:name="IgnoreTabsAndBlanksForLineCalculation" config:type="boolean">false</config:config-item>
    <config:config-item config:name="LoadReadonly" config:type="boolean">false</config:config-item>
    <config:config-item config:name="DoNotCaptureDrawObjsOnPage" config:type="boolean">false</config:config-item>
    <config:config-item config:name="AddVerticalFrameOffsets" config:type="boolean">false</config:config-item>
    <config:config-item config:name="UnxForceZeroExtLeading" config:type="boolean">false</config:config-item>
    <config:config-item config:name="IsLabelDocument" config:type="boolean">false</config:config-item>
-   <config:config-item config:name="TableRowKeep" config:type="boolean">false</config:config-item>
+   <config:config-item config:name="TableRowKeep" config:type="boolean">true</config:config-item>
    <config:config-item config:name="RsidRoot" config:type="int">917213</config:config-item>
    <config:config-item config:name="PrintHiddenText" config:type="boolean">false</config:config-item>
    <config:config-item config:name="ProtectForm" config:type="boolean">false</config:config-item>
-   <config:config-item config:name="MsWordCompMinLineHeightByFly" config:type="boolean">false</config:config-item>
+   <config:config-item config:name="MsWordCompMinLineHeightByFly" config:type="boolean">true</config:config-item>
    <config:config-item config:name="BackgroundParaOverDrawings" config:type="boolean">false</config:config-item>
    <config:config-item config:name="SaveVersionOnClose" config:type="boolean">false</config:config-item>
    <config:config-item config:name="MathBaselineAlignment" config:type="boolean">true</config:config-item>
@@ -159,7 +159,7 @@
    <style:text-properties style:use-window-font-color="true" loext:opacity="0%" style:font-name="Liberation Serif" fo:font-size="12pt" fo:language="en" fo:country="US" style:letter-kerning="true" style:font-name-asian="Noto Serif CJK SC" style:font-size-asian="10.5pt" style:language-asian="zh" style:country-asian="CN" style:font-name-complex="Lohit Devanagari1" style:font-size-complex="12pt" style:language-complex="hi" style:country-complex="IN"/>
   </style:default-style>
   <style:default-style style:family="paragraph">
-   <style:paragraph-properties fo:hyphenation-ladder-count="no-limit" style:text-autospace="ideograph-alpha" style:punctuation-wrap="hanging" style:line-break="strict" style:tab-stop-distance="0.4925in" style:writing-mode="page"/>
+   <style:paragraph-properties fo:hyphenation-ladder-count="no-limit" style:text-autospace="ideograph-alpha" style:punctuation-wrap="hanging" style:line-break="strict" style:tab-stop-distance="0.4925in" style:writing-mode="lr-tb"/>
    <style:text-properties style:use-window-font-color="true" loext:opacity="0%" style:font-name="Liberation Serif" fo:font-size="12pt" fo:language="en" fo:country="US" style:letter-kerning="true" style:font-name-asian="Noto Serif CJK SC" style:font-size-asian="10.5pt" style:language-asian="zh" style:country-asian="CN" style:font-name-complex="Lohit Devanagari1" style:font-size-complex="12pt" style:language-complex="hi" style:country-complex="IN" fo:hyphenate="false" fo:hyphenation-remain-char-count="2" fo:hyphenation-push-char-count="2" loext:hyphenation-no-caps="false"/>
   </style:default-style>
   <style:default-style style:family="table">
@@ -231,53 +231,56 @@
    <style:text-properties style:font-name="OpenSymbol" fo:font-family="OpenSymbol" style:font-charset="x-symbol" style:font-name-asian="OpenSymbol" style:font-family-asian="OpenSymbol" style:font-charset-asian="x-symbol" style:font-name-complex="OpenSymbol" style:font-family-complex="OpenSymbol" style:font-charset-complex="x-symbol"/>
   </style:style>
   <style:style style:name="Numbering_20_Symbols" style:display-name="Numbering Symbols" style:family="text"/>
+  <style:style style:name="Internet_20_link" style:display-name="Internet link" style:family="text">
+   <style:text-properties fo:color="#000080" loext:opacity="100%" style:text-underline-style="solid" style:text-underline-width="auto" style:text-underline-color="font-color"/>
+  </style:style>
   <text:outline-style style:name="Outline">
    <text:outline-level-style text:level="1" text:style-name="Numbering_20_Symbols" loext:num-list-format="%1%" style:num-format="1">
     <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
      <style:list-level-label-alignment text:label-followed-by="listtab"/>
     </style:list-level-properties>
    </text:outline-level-style>
-   <text:outline-level-style text:level="2" style:num-format="1" text:display-levels="2">
+   <text:outline-level-style text:level="2" loext:num-list-format="%1%.%2%" style:num-format="1" text:display-levels="2">
     <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
      <style:list-level-label-alignment text:label-followed-by="listtab"/>
     </style:list-level-properties>
    </text:outline-level-style>
-   <text:outline-level-style text:level="3" style:num-format="">
+   <text:outline-level-style text:level="3" loext:num-list-format="%3%" style:num-format="">
     <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
      <style:list-level-label-alignment text:label-followed-by="listtab"/>
     </style:list-level-properties>
    </text:outline-level-style>
-   <text:outline-level-style text:level="4" style:num-format="">
+   <text:outline-level-style text:level="4" loext:num-list-format="%4%" style:num-format="">
     <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
      <style:list-level-label-alignment text:label-followed-by="listtab"/>
     </style:list-level-properties>
    </text:outline-level-style>
-   <text:outline-level-style text:level="5" style:num-format="">
+   <text:outline-level-style text:level="5" loext:num-list-format="%5%" style:num-format="">
     <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
      <style:list-level-label-alignment text:label-followed-by="listtab"/>
     </style:list-level-properties>
    </text:outline-level-style>
-   <text:outline-level-style text:level="6" style:num-format="">
+   <text:outline-level-style text:level="6" loext:num-list-format="%6%" style:num-format="">
     <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
      <style:list-level-label-alignment text:label-followed-by="listtab"/>
     </style:list-level-properties>
    </text:outline-level-style>
-   <text:outline-level-style text:level="7" style:num-format="">
+   <text:outline-level-style text:level="7" loext:num-list-format="%7%" style:num-format="">
     <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
      <style:list-level-label-alignment text:label-followed-by="listtab"/>
     </style:list-level-properties>
    </text:outline-level-style>
-   <text:outline-level-style text:level="8" style:num-format="">
+   <text:outline-level-style text:level="8" loext:num-list-format="%8%" style:num-format="">
     <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
      <style:list-level-label-alignment text:label-followed-by="listtab"/>
     </style:list-level-properties>
    </text:outline-level-style>
-   <text:outline-level-style text:level="9" style:num-format="">
+   <text:outline-level-style text:level="9" loext:num-list-format="%9%" style:num-format="">
     <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
      <style:list-level-label-alignment text:label-followed-by="listtab"/>
     </style:list-level-properties>
    </text:outline-level-style>
-   <text:outline-level-style text:level="10" style:num-format="">
+   <text:outline-level-style text:level="10" loext:num-list-format="%10%" style:num-format="">
     <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
      <style:list-level-label-alignment text:label-followed-by="listtab"/>
     </style:list-level-properties>
@@ -286,6 +289,9 @@
   <text:notes-configuration text:note-class="footnote" style:num-format="1" text:start-value="0" text:footnotes-position="page" text:start-numbering-at="document"/>
   <text:notes-configuration text:note-class="endnote" style:num-format="i" text:start-value="0"/>
   <text:linenumbering-configuration text:number-lines="false" text:offset="0.1965in" style:num-format="1" text:number-position="left" text:increment="5"/>
+  <style:default-page-layout>
+   <style:page-layout-properties style:writing-mode="lr-tb" style:layout-grid-standard-mode="true"/>
+  </style:default-page-layout>
  </office:styles>
  <office:automatic-styles>
   <style:style style:name="P1" style:family="paragraph" style:parent-style-name="Heading_20_1">
@@ -297,33 +303,123 @@
   <style:style style:name="P3" style:family="paragraph" style:parent-style-name="Heading_20_1">
    <style:text-properties officeooo:rsid="000e9922" officeooo:paragraph-rsid="000e9922"/>
   </style:style>
-  <style:style style:name="P4" style:family="paragraph" style:parent-style-name="Heading_20_1">
-   <style:text-properties officeooo:rsid="0010ee7a" officeooo:paragraph-rsid="0010ee7a"/>
-  </style:style>
-  <style:style style:name="P5" style:family="paragraph" style:parent-style-name="Heading_20_2">
+  <style:style style:name="P4" style:family="paragraph" style:parent-style-name="Heading_20_2">
    <style:text-properties officeooo:rsid="000e9922" officeooo:paragraph-rsid="000e9922"/>
   </style:style>
-  <style:style style:name="P6" style:family="paragraph" style:parent-style-name="Text_20_body">
+  <style:style style:name="P5" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="000e9922" officeooo:paragraph-rsid="000e9922"/>
+  </style:style>
+  <style:style style:name="P6" style:family="paragraph" style:parent-style-name="Heading_20_1">
+   <style:text-properties officeooo:rsid="0010ee7a" officeooo:paragraph-rsid="0010ee7a"/>
+  </style:style>
+  <style:style style:name="P7" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="0010ee7a" officeooo:paragraph-rsid="0010ee7a"/>
+  </style:style>
+  <style:style style:name="P8" style:family="paragraph" style:parent-style-name="Text_20_body">
    <style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
    <style:text-properties officeooo:rsid="000dfedd" officeooo:paragraph-rsid="000dfedd"/>
   </style:style>
-  <style:style style:name="P7" style:family="paragraph" style:parent-style-name="Text_20_body">
+  <style:style style:name="P9" style:family="paragraph" style:parent-style-name="Text_20_body">
    <style:text-properties officeooo:rsid="000dfedd" officeooo:paragraph-rsid="000e9922"/>
   </style:style>
-  <style:style style:name="P8" style:family="paragraph" style:parent-style-name="Text_20_body">
-   <style:text-properties officeooo:rsid="000e9922" officeooo:paragraph-rsid="000e9922"/>
-  </style:style>
-  <style:style style:name="P9" style:family="paragraph" style:parent-style-name="Text_20_body">
+  <style:style style:name="P10" style:family="paragraph" style:parent-style-name="Text_20_body">
    <style:text-properties officeooo:paragraph-rsid="000e9922"/>
   </style:style>
-  <style:style style:name="P10" style:family="paragraph" style:parent-style-name="Text_20_body">
+  <style:style style:name="P11" style:family="paragraph" style:parent-style-name="Text_20_body">
    <style:text-properties officeooo:rsid="000f946a" officeooo:paragraph-rsid="000f946a"/>
   </style:style>
-  <style:style style:name="P11" style:family="paragraph" style:parent-style-name="Text_20_body">
+  <style:style style:name="P12" style:family="paragraph" style:parent-style-name="Text_20_body">
    <style:text-properties officeooo:rsid="0010dcb2" officeooo:paragraph-rsid="0010dcb2"/>
   </style:style>
-  <style:style style:name="P12" style:family="paragraph" style:parent-style-name="Text_20_body">
+  <style:style style:name="P13" style:family="paragraph" style:parent-style-name="Heading_20_1">
+   <style:text-properties officeooo:rsid="0012e2dc" officeooo:paragraph-rsid="0012e2dc"/>
+  </style:style>
+  <style:style style:name="P14" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="0012e2dc" officeooo:paragraph-rsid="0012e2dc"/>
+  </style:style>
+  <style:style style:name="P15" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="0012e2dc" officeooo:paragraph-rsid="0012e2dc"/>
+  </style:style>
+  <style:style style:name="P16" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="0014404c" officeooo:paragraph-rsid="0014404c"/>
+  </style:style>
+  <style:style style:name="P17" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="0014404c" officeooo:paragraph-rsid="0014404c"/>
+  </style:style>
+  <style:style style:name="P18" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="0014eeb9" officeooo:paragraph-rsid="0014eeb9"/>
+  </style:style>
+  <style:style style:name="P19" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="0014eeb9" officeooo:paragraph-rsid="0014eeb9"/>
+  </style:style>
+  <style:style style:name="P20" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="0016cd4a" officeooo:paragraph-rsid="0016cd4a"/>
+  </style:style>
+  <style:style style:name="P21" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="0016cd4a" officeooo:paragraph-rsid="0016cd4a"/>
+  </style:style>
+  <style:style style:name="P22" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="00170ab2" officeooo:paragraph-rsid="00170ab2"/>
+  </style:style>
+  <style:style style:name="P23" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="00170ab2" officeooo:paragraph-rsid="00170ab2"/>
+  </style:style>
+  <style:style style:name="P24" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="0018c6a5" officeooo:paragraph-rsid="0018c6a5"/>
+  </style:style>
+  <style:style style:name="P25" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="0018c6a5" officeooo:paragraph-rsid="0018c6a5"/>
+  </style:style>
+  <style:style style:name="P26" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:paragraph-rsid="0012e2dc"/>
+  </style:style>
+  <style:style style:name="P27" style:family="paragraph" style:parent-style-name="Heading_20_1">
+   <style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
+  </style:style>
+  <style:style style:name="P28" style:family="paragraph" style:parent-style-name="Heading_20_1">
+   <style:text-properties officeooo:rsid="0012e2dc" officeooo:paragraph-rsid="0012e2dc"/>
+  </style:style>
+  <style:style style:name="P29" style:family="paragraph" style:parent-style-name="Heading_20_1">
+   <style:text-properties officeooo:rsid="000e9922" officeooo:paragraph-rsid="000e9922"/>
+  </style:style>
+  <style:style style:name="P30" style:family="paragraph" style:parent-style-name="Heading_20_1">
+   <style:text-properties officeooo:rsid="000e9922" officeooo:paragraph-rsid="000dfedd"/>
+  </style:style>
+  <style:style style:name="P31" style:family="paragraph" style:parent-style-name="Heading_20_1">
    <style:text-properties officeooo:rsid="0010ee7a" officeooo:paragraph-rsid="0010ee7a"/>
+  </style:style>
+  <style:style style:name="P32" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="0012e2dc" officeooo:paragraph-rsid="0012e2dc"/>
+  </style:style>
+  <style:style style:name="P33" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="0014404c" officeooo:paragraph-rsid="0014404c"/>
+  </style:style>
+  <style:style style:name="P34" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="0014eeb9" officeooo:paragraph-rsid="0014eeb9"/>
+  </style:style>
+  <style:style style:name="P35" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="0016cd4a" officeooo:paragraph-rsid="0016cd4a"/>
+  </style:style>
+  <style:style style:name="P36" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="00170ab2" officeooo:paragraph-rsid="00170ab2"/>
+  </style:style>
+  <style:style style:name="P37" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="0018c6a5" officeooo:paragraph-rsid="0018c6a5"/>
+  </style:style>
+  <style:style style:name="P38" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="000e9922" officeooo:paragraph-rsid="000e9922"/>
+  </style:style>
+  <style:style style:name="P39" style:family="paragraph" style:parent-style-name="Heading_20_2">
+   <style:text-properties officeooo:rsid="001a798a" officeooo:paragraph-rsid="001a798a"/>
+  </style:style>
+  <style:style style:name="P40" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="0014eeb9" officeooo:paragraph-rsid="0014eeb9"/>
+  </style:style>
+  <style:style style:name="P41" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="001a798a" officeooo:paragraph-rsid="001a798a"/>
+  </style:style>
+  <style:style style:name="P42" style:family="paragraph" style:parent-style-name="Text_20_body">
+   <style:text-properties officeooo:rsid="000e9922" officeooo:paragraph-rsid="000e9922"/>
   </style:style>
   <style:style style:name="T1" style:family="text">
    <style:text-properties officeooo:rsid="000dfedd"/>
@@ -337,68 +433,40 @@
   <style:style style:name="T4" style:family="text">
    <style:text-properties officeooo:rsid="0010ee7a"/>
   </style:style>
-  <text:list-style style:name="L1">
-   <text:list-level-style-bullet text:level="1" text:style-name="Bullet_20_Symbols" loext:num-list-format="%1%." text:bullet-char="•">
-    <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-     <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="0.5in" fo:text-indent="-0.25in" fo:margin-left="0.5in"/>
-    </style:list-level-properties>
-   </text:list-level-style-bullet>
-   <text:list-level-style-bullet text:level="2" text:style-name="Bullet_20_Symbols" loext:num-list-format="%2%." text:bullet-char="◦">
-    <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-     <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="0.75in" fo:text-indent="-0.25in" fo:margin-left="0.75in"/>
-    </style:list-level-properties>
-   </text:list-level-style-bullet>
-   <text:list-level-style-bullet text:level="3" text:style-name="Bullet_20_Symbols" loext:num-list-format="%3%." text:bullet-char="▪">
-    <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-     <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="1in" fo:text-indent="-0.25in" fo:margin-left="1in"/>
-    </style:list-level-properties>
-   </text:list-level-style-bullet>
-   <text:list-level-style-bullet text:level="4" text:style-name="Bullet_20_Symbols" loext:num-list-format="%4%." text:bullet-char="•">
-    <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-     <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="1.25in" fo:text-indent="-0.25in" fo:margin-left="1.25in"/>
-    </style:list-level-properties>
-   </text:list-level-style-bullet>
-   <text:list-level-style-bullet text:level="5" text:style-name="Bullet_20_Symbols" loext:num-list-format="%5%." text:bullet-char="◦">
-    <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-     <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="1.5in" fo:text-indent="-0.25in" fo:margin-left="1.5in"/>
-    </style:list-level-properties>
-   </text:list-level-style-bullet>
-   <text:list-level-style-bullet text:level="6" text:style-name="Bullet_20_Symbols" loext:num-list-format="%6%." text:bullet-char="▪">
-    <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-     <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="1.75in" fo:text-indent="-0.25in" fo:margin-left="1.75in"/>
-    </style:list-level-properties>
-   </text:list-level-style-bullet>
-   <text:list-level-style-bullet text:level="7" text:style-name="Bullet_20_Symbols" loext:num-list-format="%7%." text:bullet-char="•">
-    <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-     <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="2in" fo:text-indent="-0.25in" fo:margin-left="2in"/>
-    </style:list-level-properties>
-   </text:list-level-style-bullet>
-   <text:list-level-style-bullet text:level="8" text:style-name="Bullet_20_Symbols" loext:num-list-format="%8%." text:bullet-char="◦">
-    <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-     <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="2.25in" fo:text-indent="-0.25in" fo:margin-left="2.25in"/>
-    </style:list-level-properties>
-   </text:list-level-style-bullet>
-   <text:list-level-style-bullet text:level="9" text:style-name="Bullet_20_Symbols" loext:num-list-format="%9%." text:bullet-char="▪">
-    <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-     <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="2.5in" fo:text-indent="-0.25in" fo:margin-left="2.5in"/>
-    </style:list-level-properties>
-   </text:list-level-style-bullet>
-   <text:list-level-style-bullet text:level="10" text:style-name="Bullet_20_Symbols" loext:num-list-format="%10%." text:bullet-char="•">
-    <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-     <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="2.75in" fo:text-indent="-0.25in" fo:margin-left="2.75in"/>
-    </style:list-level-properties>
-   </text:list-level-style-bullet>
-  </text:list-style>
+  <style:style style:name="T5" style:family="text">
+   <style:text-properties officeooo:rsid="0012e2dc"/>
+  </style:style>
+  <style:style style:name="T6" style:family="text">
+   <style:text-properties officeooo:rsid="0014404c"/>
+  </style:style>
+  <style:style style:name="T7" style:family="text">
+   <style:text-properties officeooo:rsid="0014eeb9"/>
+  </style:style>
+  <style:style style:name="T8" style:family="text">
+   <style:text-properties officeooo:rsid="0016cd4a"/>
+  </style:style>
+  <style:style style:name="T9" style:family="text">
+   <style:text-properties officeooo:rsid="00170ab2"/>
+  </style:style>
+  <style:style style:name="T10" style:family="text">
+   <style:text-properties style:text-outline="false" style:text-line-through-style="none" style:text-line-through-type="none" style:font-name="Liberation Serif" fo:font-size="12pt" fo:font-style="normal" fo:text-shadow="none" style:text-underline-style="none" fo:font-weight="normal" style:font-size-asian="12pt" style:font-style-asian="normal" style:font-weight-asian="normal" style:font-size-complex="12pt" style:text-emphasize="none"/>
+  </style:style>
+  <style:style style:name="T11" style:family="text">
+   <style:text-properties style:font-name="Liberation Serif" fo:font-size="12pt" style:font-size-asian="12pt" style:font-size-complex="12pt"/>
+  </style:style>
   <style:page-layout style:name="pm1">
-   <style:page-layout-properties fo:page-width="8.2681in" fo:page-height="11.6929in" style:num-format="1" style:print-orientation="portrait" fo:margin-top="0.7874in" fo:margin-bottom="0.7874in" fo:margin-left="0.7874in" fo:margin-right="0.7874in" style:writing-mode="lr-tb" style:footnote-max-height="0in" loext:margin-gutter="0in">
+   <style:page-layout-properties fo:page-width="8.2681in" fo:page-height="11.6929in" style:num-format="1" style:print-orientation="portrait" fo:margin-top="0.7874in" fo:margin-bottom="0.7874in" fo:margin-left="0.7874in" fo:margin-right="0.7874in" style:writing-mode="lr-tb" style:layout-grid-color="#c0c0c0" style:layout-grid-lines="44" style:layout-grid-base-height="0.2165in" style:layout-grid-ruby-height="0in" style:layout-grid-mode="none" style:layout-grid-ruby-below="false" style:layout-grid-print="true" style:layout-grid-display="true" style:layout-grid-base-width="0.1457in" style:layout-grid-snap-to="true" style:footnote-max-height="0in" loext:margin-gutter="0in">
     <style:footnote-sep style:width="0.0071in" style:distance-before-sep="0.0398in" style:distance-after-sep="0.0398in" style:line-style="solid" style:adjustment="left" style:rel-width="25%" style:color="#000000"/>
    </style:page-layout-properties>
    <style:header-style/>
    <style:footer-style/>
   </style:page-layout>
+  <style:style style:name="dp1" style:family="drawing-page">
+   <style:drawing-page-properties draw:background-size="full"/>
+  </style:style>
  </office:automatic-styles>
  <office:master-styles>
-  <style:master-page style:name="Standard" style:page-layout-name="pm1"/>
+  <style:master-page style:name="Standard" style:page-layout-name="pm1" draw:style-name="dp1"/>
  </office:master-styles>
  <office:body>
   <office:text text:use-soft-page-breaks="true">
@@ -410,98 +478,121 @@
     <text:sequence-decl text:display-outline-level="0" text:name="Figure"/>
    </text:sequence-decls>
    <text:h text:style-name="P1" text:outline-level="1" text:is-list-header="true">EVA-1 from KK System – Reproduction</text:h>
-   <text:p text:style-name="P6">User Manual</text:p>
-   <text:p text:style-name="P6">v1.0</text:p>
+   <text:p text:style-name="P8">User Manual</text:p>
+   <text:p text:style-name="P8">v1.<text:span text:style-name="T5">1</text:span></text:p>
+   <text:h text:style-name="P13" text:outline-level="1">Building</text:h>
+   <text:h text:style-name="P14" text:outline-level="2">SMD or THT Components</text:h>
+   <text:p text:style-name="P15">There are several components with dual footprint (SMD or THT). The Reference for SMD is THT+100. So Capacitor C1 is a THT part but if one wants a SMD part it is C101. The same goes for some Resistors (R13, R113, R17, R117,…). It should be clear to assemble only one component!</text:p>
+   <text:h text:style-name="P14" text:outline-level="2">Floppy Extension</text:h>
+   <text:p text:style-name="P26"><text:span text:style-name="T5">The floppy extension uses an Arduino Mega 2560. Unfortunately the Arduino Pro micro doesn’t work, it crashes while sending the boot extension. The firmware is PFBDK with the HX20 Extension. (</text:span><text:a xlink:type="simple" xlink:href="https://github.com/electrickery/pxdisk_mega" text:style-name="Internet_20_link" text:visited-style-name="Visited_20_Internet_20_Link"><text:span text:style-name="T5">PFBDK Github Site</text:span></text:a><text:span text:style-name="T5">). There are some parts which don’t need assembly when not using this feature.</text:span></text:p>
+   <text:h text:style-name="P14" text:outline-level="2">VGA Output</text:h>
+   <text:p text:style-name="P15">There is space for a Raspberry Pi Pico (RP2040) on the board. It converts the CGA Type Video into a VGA Compatible Signal. The firmware on the Pi Pico is <text:span text:style-name="T6">MCE Blaster (</text:span><text:a xlink:type="simple" xlink:href="https://github.com/scrapcomputing/MCEBlaster" text:style-name="Internet_20_link" text:visited-style-name="Visited_20_Internet_20_Link"><text:span text:style-name="T6">MCE Blaster Github Site</text:span></text:a><text:span text:style-name="T6">).</text:span></text:p>
+   <text:p text:style-name="P17">There is no connection by default to the Pi Pico, one must connect J13 to J12 according to the wanted colour since the Output of the EVA1 is only monochrome.</text:p>
+   <text:h text:style-name="P16" text:outline-level="2">CPU</text:h>
+   <text:p text:style-name="P17">There is the possibility to use two different CPUs. Default is a MC6803R, which is the 1MHz Variant in a DIP-40 Package. The MC68A03 and MC68B03 are the 1.5MHz and 2MHz Types. Although the CPU runs at slightly over 1.5MHz (1.54 to be precise) all tested CPUs worked. The MC68B03R is the preferred Version. If one has a Hitachi CPU (HD63x03R) there is a Solder Jumper on the back (JP6) which needs to be open since the HD6303 needs Pin 2 open while the MC6803 needs it on GND (see datasheet).</text:p>
+   <text:p text:style-name="P21">R17 and R13 are important and must be placed! They select the CPU Mode.</text:p>
+   <text:h text:style-name="P16" text:outline-level="2">Firmware ROM</text:h>
+   <text:p text:style-name="P17">The firware is only 4kB, so a 2732 would be enough but since the 2732 has only 24pins and is difficult to program compared to a 2764 or 2864 the pcb has an 28pin socket which can support any EPROM from 64kbit to 512 kbit. For the prototype an AT28C64 EEPROM has been used. For this type JP10 has to be open (default). <text:span text:style-name="T7">For an EPROM JP10 should be closed. With a 27C256 one can connect a switch to Pin 27 (A14) and GND and use two different firmware variants.</text:span></text:p>
+   <text:h text:style-name="P18" text:outline-level="2"><text:soft-page-break/>Font ROM</text:h>
+   <text:p text:style-name="P19">The Font ROM uses a 2732 EPROM. There is an alternate Socket for a 2764 with a slightly different pinout. There is however no modified Font ROM file <text:span text:style-name="T8">for a 2764 </text:span>at the moment.</text:p>
+   <text:h text:style-name="P18" text:outline-level="2">GALs</text:h>
+   <text:p text:style-name="P19">There are two GALs on the PCB (U32 and U45). The .jed files are in the GAL folder. <text:span text:style-name="T8">The TL866 can program the gals just fine.</text:span></text:p>
+   <text:h text:style-name="P39" text:outline-level="2">HD6845</text:h>
+   <text:p text:style-name="P41">Only the Hitachi HD6845 is supported. The MC6845 has the ouptut shifted to the left.</text:p>
+   <text:h text:style-name="P20" text:outline-level="2">Clock</text:h>
+   <text:p text:style-name="P21">There are two footprints for the 18.432 MHz Clock. One DIP-8 and one DIP-14. Use whatever. No Crystals are supported only <text:span text:style-name="T9">MXO Type Oscillator.</text:span></text:p>
+   <text:h text:style-name="P22" text:outline-level="2">74 Series Variants</text:h>
+   <text:p text:style-name="P23">The prototype is tested with LS and HCT variants and for the most parts both are fine except for the ‘157 multiplexer. Only the 74 ALS 157 have been tested.</text:p>
+   <text:h text:style-name="P24" text:outline-level="2">Various Jumpers</text:h>
+   <text:p text:style-name="P25">JP8 can be closed if only a “straight” cable is at hand. In this case use the right DIN-5 connector. An external Floppy (TF-10 for example) can NOT be used! The internal Arduino emulator would work fine.</text:p>
+   <text:p text:style-name="P25">JP9 is for double speed operation. One can “overclock” the HX-20 with a faster crystal (two 4.9152 MHz needed). In this case all communication takes place at double speed (38400 Baud * 2). The Arduino firmware has to be changed as well!</text:p>
+   <text:h text:style-name="P22" text:outline-level="2">Case</text:h>
+   <text:p text:style-name="P23">The case is a Strapubox 5003. Supplier i<text:span text:style-name="T11">s </text:span><text:span text:style-name="T10">Segor electronics.</text:span></text:p>
    <text:h text:style-name="P3" text:outline-level="1">Connection</text:h>
-   <text:h text:style-name="P5" text:outline-level="2">Serial connection:</text:h>
-   <text:p text:style-name="P7">The connection between HX-20 and EVA-1 must be with a 5-pin DIN “crossover” cable. Pinout of the cable:</text:p>
-   <text:p text:style-name="P7">Pin HX20<text:tab/>Pin EVA1 <text:tab/>Function<text:tab/><text:tab/><text:tab/>Comment</text:p>
-   <text:p text:style-name="P7">1 <text:s text:c="4"/><text:tab/><text:tab/>1 <text:s text:c="3"/><text:tab/><text:tab/>GND</text:p>
-   <text:p text:style-name="P7">2 <text:s text:c="4"/><text:tab/><text:tab/>3 <text:s text:c="3"/><text:tab/><text:tab/>PTX <text:s/>Out (Transmit Data)</text:p>
-   <text:p text:style-name="P7">3 <text:s text:c="4"/><text:tab/><text:tab/>2 <text:s text:c="3"/><text:tab/><text:tab/>PRX <text:s/>In <text:s/>(Receive Data)</text:p>
-   <text:p text:style-name="P7">4 <text:s text:c="4"/><text:tab/><text:tab/>5 <text:s text:c="3"/><text:tab/><text:tab/>Pout Out (Transmit Mode)<text:tab/>not used</text:p>
-   <text:p text:style-name="P7">5 <text:s text:c="4"/><text:tab/><text:tab/>4 <text:s text:c="3"/><text:tab/><text:tab/>Pin <text:s/>In <text:s/>(Receive Mode)<text:tab/>not used</text:p>
+   <text:h text:style-name="P4" text:outline-level="2">Serial connection:</text:h>
+   <text:p text:style-name="P9">The connection between HX-20 and EVA-1 must be with a 5-pin DIN “crossover” cable. Pinout of the cable:</text:p>
+   <text:p text:style-name="P9">Pin HX20<text:tab/>Pin EVA1 <text:tab/>Function<text:tab/><text:tab/><text:tab/>Comment</text:p>
+   <text:p text:style-name="P9">1 <text:s text:c="4"/><text:tab/><text:tab/>1 <text:s text:c="3"/><text:tab/><text:tab/>GND</text:p>
+   <text:p text:style-name="P9">2 <text:s text:c="4"/><text:tab/><text:tab/>3 <text:s text:c="3"/><text:tab/><text:tab/>PTX <text:s/>Out (Transmit Data)</text:p>
+   <text:p text:style-name="P9"><text:soft-page-break/>3 <text:s text:c="4"/><text:tab/><text:tab/>2 <text:s text:c="3"/><text:tab/><text:tab/>PRX <text:s/>In <text:s/>(Receive Data)</text:p>
+   <text:p text:style-name="P9">4 <text:s text:c="4"/><text:tab/><text:tab/>5 <text:s text:c="3"/><text:tab/><text:tab/>Pout Out (Transmit Mode)<text:tab/>not used</text:p>
+   <text:p text:style-name="P9">5 <text:s text:c="4"/><text:tab/><text:tab/>4 <text:s text:c="3"/><text:tab/><text:tab/>Pin <text:s/>In <text:s/>(Receive Mode)<text:tab/>not used</text:p>
+   <text:p text:style-name="P9">The cable must be connected to the left socket. The right socket is for a portable floppydrive.</text:p>
+   <text:p text:style-name="P9">In the new Version of the Board is a jumper (JP8). When this Jumper is closed, a “straight 5-pin DIN cable can be used. This cable must be connected to the right socket. In this case a portable floppydrive cannot be used!</text:p>
+   <text:h text:style-name="P4" text:outline-level="2">Monitor Connection:</text:h>
+   <text:p text:style-name="P5">There are two monitor connections, a Video connector (FBAS, SCART compatible) and a CGA Type connection (15.6kHz, 50 Hz) for a CGA compatible monitor.</text:p>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:p text:style-name="P5"/>
+   <text:h text:style-name="P30" text:outline-level="1"><text:soft-page-break/>Usage</text:h>
+   <text:p text:style-name="P5">After connection the monitor and power the startup screen should show. Here are the most common shortcuts and also the first entry for the HX-20.</text:p>
+   <text:h text:style-name="P4" text:outline-level="2"><text:span text:style-name="T4">Control</text:span> characters:</text:h>
+   <text:p text:style-name="P5">CTRL+E<text:tab/>Deletes from Cursor to the end of the line</text:p>
+   <text:p text:style-name="P5">CTRL+F<text:tab/>Toggle Inverse (only <text:span text:style-name="T3">for</text:span> “<text:span text:style-name="T3">special</text:span>” special character<text:span text:style-name="T3">s</text:span>)</text:p>
+   <text:p text:style-name="P5">CTRL+G<text:tab/>Toggle bright (only <text:span text:style-name="T3">for</text:span> “<text:span text:style-name="T3">special</text:span>” special character<text:span text:style-name="T3">s</text:span>)</text:p>
+   <text:p text:style-name="P5">CTRL+N<text:tab/>“special” character from now on. This writes every character with Bit 7 set. It won’t show unless one “<text:span text:style-name="T3">activates” them with CTRL+F or CTRL+G</text:span></text:p>
+   <text:p text:style-name="P11">CTRL+I<text:tab/>Horizontal TAB</text:p>
+   <text:p text:style-name="P11">CTRL+P<text:tab/>Move Window up. The TEXTRAM Chip on the Reproduction board is twice as big. It can store 50 Lines with 80 characters. Moves only the Window of the screen buffer.</text:p>
+   <text:p text:style-name="P11">CTRL+Q<text:tab/>Move Window down. Moves only the Window of the screen buffer.</text:p>
+   <text:p text:style-name="P11">CTRL+T<text:tab/>Restores the original screen buffer window.</text:p>
+   <text:p text:style-name="P12">CTRL+S<text:tab/>Jumps into monitor program. In the new EPROM is a monitor program (MC3 monitor from Daniel Tufvesson). After CTRL+S connect a terminal (38400Baud) and press Enter.</text:p>
+   <text:p text:style-name="P12">CTRL+V<text:tab/>Cursor visible</text:p>
+   <text:p text:style-name="P12">CTRL+W<text:tab/>Cursor invisible</text:p>
+   <text:p text:style-name="P12">CTRL+Z<text:tab/>Deletes from Cursor to the end of the screen</text:p>
+   <text:p text:style-name="P12">CTRL+0<text:tab/>Show test picture (works only in SCREEN 1,1 Mode)</text:p>
+   <text:p text:style-name="P12">CTRL+1<text:tab/>toggle Text ON/OFF</text:p>
+   <text:p text:style-name="P12">CTRL+2<text:tab/>toggle Inverted screen</text:p>
+   <text:p text:style-name="P12">CTRL+3<text:tab/>switch to 32 characters / Line</text:p>
+   <text:p text:style-name="P12">CTRL+4<text:tab/>switch to 40 characters / Line</text:p>
+   <text:p text:style-name="P12">CTRL+5<text:tab/>toggle Cursor BLINK</text:p>
+   <text:p text:style-name="P12">CTRL+6<text:tab/>Clear graphics screen (GCLS)</text:p>
+   <text:p text:style-name="P12">CTRL+7<text:tab/>switch to 72 characters / Line</text:p>
+   <text:p text:style-name="P12">CTRL+8<text:tab/>switch to 80 characters / Line</text:p>
+   <text:p text:style-name="P12">CTRL+9<text:tab/>toggle character set (the second character set has only minor differences – <text:span text:style-name="T4">see Reference Manual Appendix F)</text:span></text:p>
+   <text:p text:style-name="P12"/>
+   <text:p text:style-name="P12"/>
+   <text:p text:style-name="P12"/>
+   <text:h text:style-name="P6" text:outline-level="1"><text:soft-page-break/>EPSP Functions</text:h>
+   <text:p text:style-name="P7">The EVA-1 handles the following EPSP Functions:</text:p>
+   <text:p text:style-name="P7">$88 <text:s text:c="7"/>SCRNSIZE <text:s text:c="3"/>READ SCREEN SIZE (L.C)</text:p>
+   <text:p text:style-name="P7">$89 <text:s text:c="7"/>SCRNSIZE <text:s text:c="3"/>GET PHYSICAL SCREEN SIZE (L.C)</text:p>
+   <text:p text:style-name="P7">$8C <text:s text:c="7"/>GCRSRPOS <text:s text:c="3"/>GET CURSOR POSITION</text:p>
+   <text:p text:style-name="P7">$8F <text:s text:c="7"/>GETPOINT <text:s text:c="3"/>GET POINT ON THE DISPLAY (L.C)</text:p>
+   <text:p text:style-name="P7">$91 <text:s text:c="7"/>READLINE <text:s text:c="3"/>READ THE EXTEND OF CURRENT LINE (L.C)</text:p>
+   <text:p text:style-name="P7">$92 <text:s text:c="7"/>WRITECHAR <text:s text:c="2"/>WRITE ONE CHARACTER TO VIRTUAL SCREEN (L.C)</text:p>
+   <text:p text:style-name="P7">$93 <text:s text:c="7"/>SETDISPMOD <text:s/>SET DISPLAY MODE (C)</text:p>
+   <text:p text:style-name="P7">$97 <text:s text:c="7"/>READCHAR <text:s text:c="3"/>READ CHARACTERS FROM VS. (L,C)</text:p>
+   <text:p text:style-name="P7">$98 <text:s text:c="7"/>WRITECHAR <text:s text:c="2"/>WRITE ONE CHARACTER TO VS AND GET EXTEND OF NEW CURSOR POSITION.(L,C)</text:p>
+   <text:p text:style-name="P7">$C2 <text:s text:c="7"/>SETCRSR <text:s text:c="4"/>SET CURSOR POSITION ON THE VIRTUAL SCREEN (L.C)</text:p>
+   <text:p text:style-name="P7">$C5 <text:s text:c="7"/>SRLISTFLG <text:s text:c="2"/>SET LIST FLAG (L.C)</text:p>
+   <text:p text:style-name="P7">$C6 <text:s text:c="7"/>SRLISTFLG <text:s text:c="2"/>RESET LIST FLAG (L.C)</text:p>
+   <text:p text:style-name="P7">$C7 <text:s text:c="7"/>SETPOINT <text:s text:c="3"/>SET POINT TO DISPLAY (L.C)</text:p>
+   <text:p text:style-name="P7">$C8 <text:s text:c="7"/>DRAWLINE <text:s text:c="3"/>DRAW LINE TO DISPLAY (L.C)</text:p>
+   <text:p text:style-name="P7">$C9 <text:s text:c="7"/>SETLINETERM SET LINE TERMINATE POSITION (L.C)</text:p>
+   <text:p text:style-name="P7">$CA <text:s text:c="7"/>CLRGRAPH <text:s text:c="3"/>CLEAR THE GRAPHICS SCREEN. (L.C)</text:p>
+   <text:p text:style-name="P7">$CB <text:s text:c="7"/>DISABLED <text:s text:c="3"/>SET SCRLUPSPEED (C)</text:p>
+   <text:p text:style-name="P7">$CF <text:s text:c="7"/>DISABLED <text:s text:c="3"/>COLOR SET SELECT (C) </text:p>
+   <text:p text:style-name="P7">$D4 <text:s text:c="7"/>DISABLED <text:s text:c="3"/>?</text:p>
    <text:p text:style-name="P7"/>
-   <text:p text:style-name="P7">The cable must be connected to the left socket. The right socket is for a portable floppydrive.</text:p>
-   <text:p text:style-name="P9"><text:span text:style-name="T1">In the new Version of the Board is a jumper (JP8). When this Jumper is closed, a “straight 5-pin DIN cable can be used. This cable must be connected to the right socket. In this case a portable floppydrive cannot be used!</text:span></text:p>
-   <text:h text:style-name="P5" text:outline-level="2">Monitor Connection:</text:h>
-   <text:p text:style-name="P8">There are two monitor connections, a Video connector (FBAS, SCART compatible) and a CGA Type connection (15.6kHz, 50 Hz) for a CGA compatible monitor.</text:p>
-   <text:p text:style-name="P8"/>
-   <text:p text:style-name="P8"/>
-   <text:p text:style-name="P8"/>
-   <text:p text:style-name="P8"/>
-   <text:p text:style-name="P8"/>
-   <text:p text:style-name="P8"/>
-   <text:p text:style-name="P8"/>
-   <text:p text:style-name="P8"/>
-   <text:p text:style-name="P8"/>
-   <text:p text:style-name="P8"/>
-   <text:h text:style-name="P2" text:outline-level="1"><text:soft-page-break/><text:span text:style-name="T2">Usage</text:span></text:h>
-   <text:p text:style-name="P8">After connection the monitor and power the startup screen should show. Here are the most common shortcuts and also the first entry for the HX-20.</text:p>
-   <text:h text:style-name="P5" text:outline-level="2"><text:span text:style-name="T4">Control</text:span> characters:</text:h>
-   <text:p text:style-name="P8">CTRL+E<text:tab/>Deletes from Cursor to the end of the line</text:p>
-   <text:p text:style-name="P8">CTRL+F<text:tab/>Toggle Inverse (only <text:span text:style-name="T3">for</text:span> “<text:span text:style-name="T3">special</text:span>” special character<text:span text:style-name="T3">s</text:span>)</text:p>
-   <text:p text:style-name="P8">CTRL+G<text:tab/>Toggle bright (only <text:span text:style-name="T3">for</text:span> “<text:span text:style-name="T3">special</text:span>” special character<text:span text:style-name="T3">s</text:span>)</text:p>
-   <text:p text:style-name="P8">CTRL+N<text:tab/>“special” character from now on. This writes every character with Bit 7 set. It won’t show unless one “<text:span text:style-name="T3">activates” them with CTRL+F or CTRL+G</text:span></text:p>
-   <text:p text:style-name="P10">CTRL+I<text:tab/>Horizontal TAB</text:p>
-   <text:p text:style-name="P10">CTRL+P<text:tab/>Move Window up. The TEXTRAM Chip on the Reproduction board is twice as big. It can store 50 Lines with 80 characters. Moves only the Window of the screenbuffer.</text:p>
-   <text:p text:style-name="P10">CTRL+Q<text:tab/>Move Window down. Moves only the Window of the screenbuffer.</text:p>
-   <text:p text:style-name="P10">CTRL+T<text:tab/>Restores the original screenbuffer window.</text:p>
-   <text:p text:style-name="P11">CTRL+S<text:tab/>Jumps into monitor program. In the new EPROM is a monitor program (MC3 monitor from Daniel Tufvesson). After CTRL+S connect a terminal (38400Baud) and press Enter.</text:p>
-   <text:p text:style-name="P11">CTRL+V<text:tab/>Cursor visible</text:p>
-   <text:p text:style-name="P11">CTRL+W<text:tab/>Cursor invisible</text:p>
-   <text:p text:style-name="P11">CTRL+Z<text:tab/>Deletes from Cursor to the end of the screen</text:p>
-   <text:p text:style-name="P11">CTRL+0<text:tab/>Show testpicture (works only in SCREEN 1,1 Mode)</text:p>
-   <text:p text:style-name="P11">CTRL+1<text:tab/>toggle Text ON/OFF</text:p>
-   <text:p text:style-name="P11">CTRL+2<text:tab/>toggle Inverted screen</text:p>
-   <text:p text:style-name="P11">CTRL+3<text:tab/>switch to 32 characters / Line</text:p>
-   <text:p text:style-name="P11">CTRL+4<text:tab/>switch to 40 characters / Line</text:p>
-   <text:p text:style-name="P11">CTRL+5<text:tab/>toggle Cursor BLINK</text:p>
-   <text:p text:style-name="P11">CTRL+6<text:tab/>Clear graphics screen (GCLS)</text:p>
-   <text:p text:style-name="P11">CTRL+7<text:tab/>switch to 72 characters / Line</text:p>
-   <text:p text:style-name="P11">CTRL+8<text:tab/>switch to 80 characters / Line</text:p>
-   <text:p text:style-name="P11">CTRL+9<text:tab/>toggle characterset (the second characterset has only minor differences – <text:span text:style-name="T4">see Reference Manual Appendix F)</text:span></text:p>
-   <text:p text:style-name="P11"/>
-   <text:p text:style-name="P11"/>
-   <text:p text:style-name="P11"/>
-   <text:h text:style-name="P4" text:outline-level="1"><text:soft-page-break/>EPSP Functions</text:h>
-   <text:p text:style-name="P12">The EVA-1 handles the following EPSP Functions:</text:p>
-   <text:p text:style-name="P12">$88 <text:s text:c="7"/>SCRNSIZE <text:s text:c="3"/>READ SCREEN SIZE (L.C)</text:p>
-   <text:p text:style-name="P12">$89 <text:s text:c="7"/>SCRNSIZE <text:s text:c="3"/>GET PHYSICAL SCREEN SIZE (L.C)</text:p>
-   <text:p text:style-name="P12">$8C <text:s text:c="7"/>GCRSRPOS <text:s text:c="3"/>GET CURSOR POSITION</text:p>
-   <text:p text:style-name="P12">$8F <text:s text:c="7"/>GETPOINT <text:s text:c="3"/>GET POINT ON THE DISPLAY (L.C)</text:p>
-   <text:p text:style-name="P12">$91 <text:s text:c="7"/>READLINE <text:s text:c="3"/>READ THE EXTEND OF CURRENT LINE (L.C)</text:p>
-   <text:p text:style-name="P12">$92 <text:s text:c="7"/>WRITECHAR <text:s text:c="2"/>WRITE ONE CHARACTER TO VIRTUAL SCREEN (L.C)</text:p>
-   <text:p text:style-name="P12">$93 <text:s text:c="7"/>SETDISPMOD <text:s/>SET DISPLAY MODE (C)</text:p>
-   <text:p text:style-name="P12">$97 <text:s text:c="7"/>READCHAR <text:s text:c="3"/>READ CHARACTERS FROM VS. (L,C)</text:p>
-   <text:p text:style-name="P12">$98 <text:s text:c="7"/>WRITECHAR <text:s text:c="2"/>WRITE ONE CHARACTER TO VS AND GET EXTEND OF NEW CURSOR POSITION.(L,C)</text:p>
-   <text:p text:style-name="P12">$C2 <text:s text:c="7"/>SETCRSR <text:s text:c="4"/>SET CURSOR POSITION ON THE VIRTUAL SCREEN (L.C)</text:p>
-   <text:p text:style-name="P12">$C5 <text:s text:c="7"/>SRLISTFLG <text:s text:c="2"/>SET LIST FLAG (L.C)</text:p>
-   <text:p text:style-name="P12">$C6 <text:s text:c="7"/>SRLISTFLG <text:s text:c="2"/>RESET LIST FLAG (L.C)</text:p>
-   <text:p text:style-name="P12">$C7 <text:s text:c="7"/>SETPOINT <text:s text:c="3"/>SET POINT TO DISPLAY (L.C)</text:p>
-   <text:p text:style-name="P12">$C8 <text:s text:c="7"/>DRAWLINE <text:s text:c="3"/>DRAW LINE TO DISPLAY (L.C)</text:p>
-   <text:p text:style-name="P12">$C9 <text:s text:c="7"/>SETLINETERM SET LINE TERMINATE POSITION (L.C)</text:p>
-   <text:p text:style-name="P12">$CA <text:s text:c="7"/>CLRGRAPH <text:s text:c="3"/>CLEAR THE GRAPHICS SCREEN. (L.C)</text:p>
-   <text:p text:style-name="P12">$CB <text:s text:c="7"/>DISABLED <text:s text:c="3"/>SET SCRLUPSPEED (C)</text:p>
-   <text:p text:style-name="P12">$CF <text:s text:c="7"/>DISABLED <text:s text:c="3"/>COLOR SET SELECT (C) </text:p>
-   <text:p text:style-name="P12">$D4 <text:s text:c="7"/>DISABLED <text:s text:c="3"/>?</text:p>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"><text:soft-page-break/></text:p>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"/>
-   <text:p text:style-name="P12"><text:s/></text:p>
   </office:text>
  </office:body>
 </office:document>
